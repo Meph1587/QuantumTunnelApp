@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Alagard";
+  src: url("/fonts/alagard.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "8bitoperator";
+  src: url("/fonts/8bitoperator.ttf") format("truetype");
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "8bitoperator";
+  background-color: black;
+}
+
+h1 {
+  font-family: "Alagard";
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
