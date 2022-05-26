@@ -35,7 +35,7 @@ const WizardGrid = ({wizards, wizard, setWizard, wizardTraits}) => {
   }
   
   
-  export const WizardList = ( {wizardsContract, account, storageContract, wizard, setWizard, wizardTraits}) => {
+  export const WizardList = ( {wizardsContract, account, wizard, setWizard, wizardTraits}) => {
     const [wizards, setWizards] = useState([]);
   
     const run = useCallback(async () => {
@@ -43,17 +43,13 @@ const WizardGrid = ({wizards, wizard, setWizard, wizardTraits}) => {
       try {
         const result = await wizardsContract.tokensOfOwner(account);
   
-        for (var element of result) {
-          tokens.push(Number(element._hex));
-          const balance = await storageContract.hasTraitsStored(Number(element._hex));
-          // /verified[Number(element._hex)] = balance;
-        }
+        
   
       } catch (err) {
         console.log("err: ", err);
       }
       setWizards(tokens);
-    } ,[account, storageContract, {}, wizardsContract])
+    } ,[account, {}, wizardsContract])
     
     useEffect(() => {
       run();

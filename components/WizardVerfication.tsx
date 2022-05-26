@@ -1,6 +1,6 @@
 import type { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-import useWizardIsVerified from "../hooks/useWizardIsVerified";
+import getIsWizardApproved from "../hooks/useWizardIsApproved";
 import useInput from "../hooks/useInput";
 import Button from "./button";
 import useENSName from "../hooks/useENSName";
@@ -15,14 +15,12 @@ const storageAddress = "0x11398bf5967Cd37BC2482e0f4E111cb93D230B05";
 
 
 import { abi as ForgottenRunesWizardsCultAbi } from "../contracts/ForgottenRunesWizardsCult.json";
-const WizardVerification = ({ wizard, setWizard, show, setShow }) => {
+
+const WizardVerification = ({ l1token, tunnel, wizard, setWizard, show, setShow }) => {
   const { account } = useWeb3React<Web3Provider>();
 
-  const storageContract = useStorageContract(storageAddress);
+  const {data: isApproved} =  getIsWizardApproved(account, tunnel, l1token);
   const wizardsContract = useContract("0x521f9c7505005cfa19a8e5786a9c3c9c9f5e6f42", ForgottenRunesWizardsCultAbi);
-  
-  const {data: isApproved} =  useWizardIsVerified(wizard, storageAddress);
-
   let traits = wizardTraits.traits[wizard]
   let name = wizardTraits.names[wizard]
   const ENSName = useENSName(account);
@@ -43,14 +41,14 @@ const WizardVerification = ({ wizard, setWizard, show, setShow }) => {
       <button className="border-solid border-white border-2  p-4 pl-10 pr-10 rounded-xs w-96"
         onClick={() => {wizard? tunnelWizard() :setShow(!show)}}
       >
-         {wizard? 'Tunnel Wizard': `Select Wizard`}
+         {wizard? isApproved ? 'Tunnel Wizard' : 'Approve Wizard': `Select Wizard`}
       </button>
       
       <br></br>
         
       <div className="pt-10">
       {show ?  
-        <WizardList wizardsContract={wizardsContract} account={account} storageContract={storageContract} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits}/> : ""  }
+        <WizardList wizardsContract={l1token} account={account} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits}/> : ""  }
       </div>
     </div>
   );
