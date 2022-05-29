@@ -6,7 +6,6 @@ import useKeepSWRDataLiveAsBlocksArrive from "./useKeepSWRDataLiveAsBlocksArrive
 function getIsTokenApproved(contract: L1Token, account: string, tunnelAddress: string) {
   return async (_: string) => {
     const approved = await contract.isApprovedForAll(account, tunnelAddress);
-    console.log(approved)
 
     return approved;
   };
@@ -16,6 +15,7 @@ export default function useIsTokenApproved(
   t1: L1Token,
   account: string,
   tunnelAddress: string,
+  chainId:number,
   suspense = false
 ){
 
@@ -24,7 +24,7 @@ export default function useIsTokenApproved(
     typeof tunnelAddress === "string";
 
   const result = useSWR(
-    shouldFetch ? ["IsWizardVerified"] : null,
+    shouldFetch ? ["IsWizardVerified" + chainId] : null,
     getIsTokenApproved(t1, account, tunnelAddress),
     {
       suspense,

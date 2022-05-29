@@ -9,21 +9,21 @@ import useContract from "../hooks/useContract";
 import { formatEtherscanLink, shortenHex } from "../util";
 import type { L1Token } from "../contracts/types";
 import type { L2Token } from "../contracts/types";
-import WizardStorage_ABI from "../contracts/WizardStorage.json";
-import { abi as ForgottenRunesWizardsCultAbi } from "../contracts/ForgottenRunesWizardsCult.json";
-// import { useStore } from "../pages/index";
-// import {WizardList} from "./WizardGrid";
+
+import {switchNetwork} from "../utils/switchNetwork"
 
 type Props = {
   triedToEagerConnect: boolean;
 };
 
-const Account = ({ triedToEagerConnect }: Props) => {
+
+
+
+const Account = ({ triedToEagerConnect, chainId, setWizard }) => {
   const {
     active,
     error,
     activate,
-    chainId,
     account,
     setError,
   } = useWeb3React();
@@ -90,10 +90,12 @@ const Account = ({ triedToEagerConnect }: Props) => {
   }else{
     return (
       <div className="grid grid-flow-col grid-cols-auto p-2 h-10">
-        
-          <p className="text-left" onClick={() => onboarding.current?.startOnboarding()}>
-            {chainId == 4 ? "Rinkeby" : chainId == 42? "Kovan": "Switch To Rinkeby Or Kovan"}
-          </p>
+          <div className="text-left" >
+            <p onClick={() => onboarding.current?.startOnboarding()}>
+              {chainId == 4 ? "Rinkeby" : chainId == 42? "Kovan": "Switch To Rinkeby Or Kovan"}
+            </p>
+            <button onClick={() => {switchNetwork(chainId===42 ? 4 : 42); setWizard(null)}}>ᐊ switch ᐅ</button>
+          </div>
           <div className="text-right z-10 overflow-visible">
             <button onClick={() => setShowDetails(!showDetails)}>
               {account.slice(0,6)+"..." + account.slice(28,32)} {showDetails? "ᐃ":"ᐁ"}

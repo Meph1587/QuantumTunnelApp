@@ -3,13 +3,14 @@ import Head from "next/head";
 import {useState } from "react";
 import Account from "../components/Account";
 import WizardVerification from "../components/WizardVerfication";
+import useTokensAreApproved from "../hooks/useTokensAreApproved";
 import useContract from "../hooks/useContract";
 import useEagerConnect from "../hooks/useEagerConnect";
 const QT1 = require( "../contracts/QuantumTunnelL1.json");
 const QT2 = require( "../contracts/QuantumTunnelL2.json");
 const T1  = require("../contracts/L1Token.json");
 const T2  = require("../contracts/L2Token.json");
-import type { L1Token } from "../contracts/types";
+import type { L1Token, L2Token, QuantumTunnelL1, QuantumTunnelL2 } from "../contracts/types";
 //import create from 'zustand';
 
 
@@ -26,15 +27,13 @@ function Home() {
   let [wizard, setWizard] = useState(null)
 
 
-  const qt1 = useContract("0x2c647a0c03c694a3c133f3688af2163aeb839b12", QT1);
-  const qt2 = useContract("0xe6f3d7cdcfecb71413d4de218879977a62d4f0ad", QT2);
-  const t1 = useContract("0xf3cf95d0ba6130112b3580534ade4c27eeb7de99", T1) as L1Token ;
-  const t2 = useContract("0x38689886476b6df21a0c3b78ff6ed0bae885b111", T2);
-
+  const qt1 = useContract("0x6f2c020607a695860f6e580866feda65381c0f08", QT1) as QuantumTunnelL1;
+  const qt2 = useContract("0xde297ECc1fFD698109372f7b2472Bd77306CA34f", QT2) as QuantumTunnelL2;
+  const t1 = useContract("0x103f8048358da399cf0f4e10dfd792af64c1e1b3", T1) as L1Token;
+  const t2 = useContract("0xa77f3bd33e0686d110f07c4f02f6293043b12ec4", T2) as L2Token;
 
   
 
-  const wizardTraits = require("../data/traits.json");
 
   return (
     <div style={{"backgroundColor":"black", "color":"white", "height":"100%", "overflow": "scroll"}}>
@@ -46,7 +45,7 @@ function Home() {
       <main className="text-center">
         <div>
           <div className="p-10">
-            <Account triedToEagerConnect={triedToEagerConnect}/>
+            <Account triedToEagerConnect={triedToEagerConnect} chainId={chainId} setWizard={setWizard}/>
             <h1 className="text-6xl p-18 pb-0">Quantum Tunnel</h1>
           </div>
           <div className="text-center">
@@ -78,7 +77,7 @@ function Home() {
           <div className="mt-[130px]">
           {isConnected && (
             <section>
-              <WizardVerification wizard={wizard} setWizard={setWizard} show={show} setShow={setShow} t1={t1} t2={t2} qt1={qt1} qt2={qt2}/>
+              <WizardVerification chainId={chainId} wizard={wizard} setWizard={setWizard} show={show} setShow={setShow} t1={t1} t2={t2} qt1={qt1} qt2={qt2}/>
             </section>
           )}
           </div>

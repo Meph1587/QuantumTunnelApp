@@ -1,17 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import MetaMaskOnboarding from "@metamask/onboarding";
 import { useWeb3React } from "@web3-react/core";
-import { UserRejectedRequestError } from "@web3-react/injected-connector";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { injected } from "../connectors";
-import useContract from "../hooks/useContract";
-import { formatEtherscanLink, shortenHex } from "../util";
-import WizardStorage_ABI from "../contracts/WizardStorage.json";
-import { abi as ForgottenRunesWizardsCultAbi } from "../contracts/ForgottenRunesWizardsCult.json";
 
 
-
-const WizardGrid = ({wizards, wizard, setWizard, wizardTraits}) => {
+const WizardGrid = ({wizards, wizard, setWizard, wizardTraits,t1Address}) => {
   const {
     chainId,
   } = useWeb3React();
@@ -35,9 +27,9 @@ const WizardGrid = ({wizards, wizard, setWizard, wizardTraits}) => {
           :
           <div>
             {chainId == 4 && wizards.length == 0? 
-              <p className="p-8">Mint testnet tokens on Etherscan: <a href="https://rinkeby.etherscan.io/token/0xf3cf95d0ba6130112b3580534ade4c27eeb7de99#writeContract" target="_blank"><u>here</u></a></p>
+              <p className="p-8">Mint testnet tokens on Etherscan: <a href={"https://rinkeby.etherscan.io/token/"+ t1Address+"#writeContract"} target="_blank"><u>here</u></a></p>
               :
-              <p className="p-8">Pending Transactions</p>
+              <p className="p-8">No Bridged Wizards</p>
             }
           </div>
           }
@@ -46,27 +38,27 @@ const WizardGrid = ({wizards, wizard, setWizard, wizardTraits}) => {
   }
   
   
-  export const WizardList = ( {account, wizard, setWizard, wizardTraits, t1, t2}) => {
+  export const WizardList = ( {account, chainId, wizard, setWizard, wizardTraits, t1, t2}) => {
     const [wizards, setWizards] = useState([]);
   
     const run = useCallback(async () => {
       const tokens: any = [];
       try {
-        const balance = (await t1.balanceOf(account)).toNumber();
+        const balance = chainId === 4 ? (await t1.balanceOf(account)).toNumber() : (await t2.balanceOf(account)).toNumber();
         for (let i=0; i<balance; i++) {
             tokens.push(
-              await t1.tokenOfOwnerByIndex(account,i)
+              chainId === 4 ? await t1.tokenOfOwnerByIndex(account,i) : await t2.tokenOfOwnerByIndex(account,i)
             )
         }
       } catch (err) {
         console.log("err: ", err);
       }
       setWizards(tokens);
-    } ,[account,  t1])
+    } ,[account,  t1, t2, wizard])
     
     useEffect(() => {
       run();
     }, [run]);
   
-    return <WizardGrid wizards={wizards} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits}/>
+    return <WizardGrid wizards={wizards} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1Address={t1.address}/>
   }
