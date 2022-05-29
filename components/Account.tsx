@@ -7,10 +7,12 @@ import { injected } from "../connectors";
 import useENSName from "../hooks/useENSName";
 import useContract from "../hooks/useContract";
 import { formatEtherscanLink, shortenHex } from "../util";
+import type { L1Token } from "../contracts/types";
+import type { L2Token } from "../contracts/types";
 import WizardStorage_ABI from "../contracts/WizardStorage.json";
 import { abi as ForgottenRunesWizardsCultAbi } from "../contracts/ForgottenRunesWizardsCult.json";
-import { useStore } from "../pages/index";
-import {WizardList} from "./WizardGrid";
+// import { useStore } from "../pages/index";
+// import {WizardList} from "./WizardGrid";
 
 type Props = {
   triedToEagerConnect: boolean;
@@ -35,18 +37,13 @@ const Account = ({ triedToEagerConnect }: Props) => {
 
   // manage connecting state for injected connector
   const [connecting, setConnecting] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   useEffect(() => {
     if (active || error) {
       setConnecting(false);
       onboarding.current?.stopOnboarding();
     }
   }, [active, error]);
-
-  const ENSName = useENSName(account);
-  const wizardsContract = useContract("0x521f9c7505005cfa19a8e5786a9c3c9c9f5e6f42", ForgottenRunesWizardsCultAbi);
-  const storageContract = useContract("0x11398bf5967Cd37BC2482e0f4E111cb93D230B05", WizardStorage_ABI);
-  const wizardTraits = require("../data/traits.json");
-  const verified = {};
 
   if (error) {
     return null;
@@ -92,14 +89,25 @@ const Account = ({ triedToEagerConnect }: Props) => {
     );
   }else{
     return (
-      <div className="grid grid-flow-col grid-cols-auto p-2">
+      <div className="grid grid-flow-col grid-cols-auto p-2 h-10">
         
-          <p className="text-left " onClick={() => onboarding.current?.startOnboarding()}>
+          <p className="text-left" onClick={() => onboarding.current?.startOnboarding()}>
             {chainId == 4 ? "Rinkeby" : chainId == 42? "Kovan": "Switch To Rinkeby Or Kovan"}
           </p>
-          <p className="text-right" onClick={() => onboarding.current?.startOnboarding()}>
-            {account.slice(0,6)+"..." + account.slice(28,32)}
-          </p>
+          <div className="text-right z-10 overflow-visible">
+            <button onClick={() => setShowDetails(!showDetails)}>
+              {account.slice(0,6)+"..." + account.slice(28,32)} {showDetails? "ᐃ":"ᐁ"}
+            </button>
+            {
+              showDetails? 
+              <div className="pt-5">
+                  <div className=""><a href={"https://rinkeby.etherscan.io/address/" + account} target="_blank">L1 Etherscan</a></div><br/>
+                  <div className=""><a href={"https://kovan.etherscan.io/address/" + account} target="_blank">L2 Etherscan</a></div><br/>
+                  <div className=""><a href={"https://kovan.etherscan.io/address/" + account} target="_blank">Pending Txs</a></div>
+              </div>
+              :null
+            }
+          </div>
       </div>
   )
   }
