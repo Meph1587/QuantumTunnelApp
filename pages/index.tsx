@@ -3,7 +3,7 @@ import Head from "next/head";
 import {useState } from "react";
 import Account from "../components/Account";
 import WizardVerification from "../components/WizardVerfication";
-import useTokensAreApproved from "../hooks/useTokensAreApproved";
+import PendingTxs from "../components/PendingTxs";
 import useContract from "../hooks/useContract";
 import useEagerConnect from "../hooks/useEagerConnect";
 const QT1 = require( "../contracts/QuantumTunnelL1.json");
@@ -26,11 +26,10 @@ function Home() {
   let [show, setShow] = useState(false)
   let [wizard, setWizard] = useState(null)
 
-
-  const qt1 = useContract("0x6f2c020607a695860f6e580866feda65381c0f08", QT1) as QuantumTunnelL1;
-  const qt2 = useContract("0xde297ECc1fFD698109372f7b2472Bd77306CA34f", QT2) as QuantumTunnelL2;
-  const t1 = useContract("0x103f8048358da399cf0f4e10dfd792af64c1e1b3", T1) as L1Token;
-  const t2 = useContract("0xa77f3bd33e0686d110f07c4f02f6293043b12ec4", T2) as L2Token;
+  const qt1 = useContract("0xd2f7315f100f1367bdcc135d2a91b2be87f678cf", QT1) as QuantumTunnelL1;
+  const qt2 = useContract("0x3fe894c6955bddd8e9dcbfb4afa321ebfdf7faa3", QT2) as QuantumTunnelL2;
+  const t1 = useContract("0xc1f6531789f8591df8d8de786f1ca7d7d0c1df3b", T1) as L1Token;
+  const t2 = useContract("0xe7bf109244854dcb734f3ccbd0327841a4c818fc", T2) as L2Token;
 
   
 
@@ -81,6 +80,7 @@ function Home() {
             </section>
           )}
           </div>
+          <PendingTxs txs={["0x8a89a10f0d0ab8e4c787eae747ebaf7651af0a11a3264989eebd6db00c8eda75", "0xda8e1fd6160cf24a5bda27ca7e1f51b0e581561a03ad714a85677647a3aab5fe"]}/>
         </div>
       </main>
 

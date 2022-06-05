@@ -1,4 +1,4 @@
-import type { Web3Provider } from "@ethersproject/providers";
+//import type { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import useTokensAreApproved from "../hooks/useTokensAreApproved";
 import useInput from "../hooks/useInput";
@@ -17,14 +17,14 @@ import {switchNetwork} from "../utils/switchNetwork"
 const wizardTraits = require("../data/traits.json");
 
 const WizardVerification = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, qt2 }) => {
-  let { account } = useWeb3React<Web3Provider>();
+  let { account } = useWeb3React();
 
   let isApproved = useTokensAreApproved(t1, account, qt1.address, chainId);
 
   let [showAdvanced, setShowAdvanced] = useState(false)
   let [isTunneling, setIsTunneling] = useState(false)
-  let [relayerFee, setRelayerFee] = useState(10000000000)
-  let [callbackFee, setCallbackFee] = useState(10000000000)
+  let [relayerFee, setRelayerFee] = useState(0)
+  let [callbackFee, setCallbackFee] = useState(0)
   let name = wizardTraits.names[wizard]
 
   
