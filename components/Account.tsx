@@ -95,12 +95,12 @@ const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) =>
             <button onClick={() => setShowDetails(!showDetails)}>
               {account.slice(0,6)+"..." + account.slice(28,32)} {showDetails? "ᐃ":"ᐁ"}
             </button>
+            <div className="pt-5"><button onClick={ () => {setShowPending(true)}}>Tx History</button></div>
             {
               showDetails? 
               <div className="pt-5">
                   <div className=""><a href={"https://rinkeby.etherscan.io/address/" + account} target="_blank">L1 Etherscan</a></div><br/>
                   <div className=""><a href={"https://kovan.etherscan.io/address/" + account} target="_blank">L2 Etherscan</a></div><br/>
-                  <div className=""><button onClick={ () => {setShowPending(true)}}>Tx History</button></div>
               </div>
               :null
             }

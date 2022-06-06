@@ -46,7 +46,7 @@ const PendingTxs = ({account, t1, t2}) => {
         ))}
       </div>
       :
-      <p>No Pending Transactions</p>
+      <p>No Transactions</p>
     }
     </div>
   );
