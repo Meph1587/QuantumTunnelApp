@@ -14,7 +14,7 @@ const PendingTxs = ({account, t1, t2}) => {
       {data?.length > 0 ? 
       <div className="pb-24 ">
         {data.map(transfer =>(
-          <div className="p-10 pl-48 pr-48 grid grid-flow-col grid-cols-auto">
+          <div key={transfer.transferId} className="p-10 pl-48 pr-48 grid grid-flow-col grid-cols-auto">
               <div className="text-left p-1 ml-5 w-28">
                 <p className="text-gray-500">Status:</p>
                 {transfer.status}
