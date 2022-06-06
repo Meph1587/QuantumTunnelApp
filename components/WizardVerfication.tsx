@@ -22,7 +22,7 @@ const WizardVerification = ({chainId,  wizard, setWizard, show, setShow, t1, t2,
   let isApproved = useTokensAreApproved(t1, account, qt1.address, chainId);
 
   let [showAdvanced, setShowAdvanced] = useState(false)
-  let [isTunneling, setIsTunneling] = useState(false)
+  let [isTunneling, setIsTunneling] = useState(true)
   let [relayerFee, setRelayerFee] = useState(0)
   let [callbackFee, setCallbackFee] = useState(0)
   let name = wizardTraits.names[wizard]
@@ -59,7 +59,7 @@ const WizardVerification = ({chainId,  wizard, setWizard, show, setShow, t1, t2,
         </button>
        
 
-      {wizard? isApproved.data || chainId===42 ? 
+      {wizard ? isApproved.data || chainId===42 ? 
       <div>
         <button className="text-s pt-6 rounded-xs w-96"
           onClick={() => setShowAdvanced(!showAdvanced)}
@@ -67,7 +67,7 @@ const WizardVerification = ({chainId,  wizard, setWizard, show, setShow, t1, t2,
           Advanced {showAdvanced? "ᐃ":"ᐁ"}
         </button>
       </div>
-      : null: null}
+      : isTunneling ? "check Pending": null : null}
 
       <div> 
         {showAdvanced ? 

@@ -4,11 +4,6 @@ import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { injected } from "../connectors";
-import useENSName from "../hooks/useENSName";
-import useContract from "../hooks/useContract";
-import { formatEtherscanLink, shortenHex } from "../util";
-import type { L1Token } from "../contracts/types";
-import type { L2Token } from "../contracts/types";
 
 import {switchNetwork} from "../utils/switchNetwork"
 
@@ -19,7 +14,7 @@ type Props = {
 
 
 
-const Account = ({ triedToEagerConnect, chainId, setWizard }) => {
+const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) => {
   const {
     active,
     error,
@@ -105,7 +100,7 @@ const Account = ({ triedToEagerConnect, chainId, setWizard }) => {
               <div className="pt-5">
                   <div className=""><a href={"https://rinkeby.etherscan.io/address/" + account} target="_blank">L1 Etherscan</a></div><br/>
                   <div className=""><a href={"https://kovan.etherscan.io/address/" + account} target="_blank">L2 Etherscan</a></div><br/>
-                  <div className=""><a href={"https://kovan.etherscan.io/address/" + account} target="_blank">Pending Txs</a></div>
+                  <div className=""><button onClick={ () => {setShowPending(true)}}>Tx History</button></div>
               </div>
               :null
             }

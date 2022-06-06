@@ -25,6 +25,7 @@ function Home() {
 
   let [show, setShow] = useState(false)
   let [wizard, setWizard] = useState(null)
+  let [showPending, setShowPending] = useState(false)
 
   const qt1 = useContract("0xd2f7315f100f1367bdcc135d2a91b2be87f678cf", QT1) as QuantumTunnelL1;
   const qt2 = useContract("0x3fe894c6955bddd8e9dcbfb4afa321ebfdf7faa3", QT2) as QuantumTunnelL2;
@@ -42,45 +43,55 @@ function Home() {
       </Head>
 
       <main className="text-center">
-        <div>
-          <div className="p-10">
-            <Account triedToEagerConnect={triedToEagerConnect} chainId={chainId} setWizard={setWizard}/>
-            <h1 className="text-6xl p-18 pb-0">Quantum Tunnel</h1>
-          </div>
           <div className="text-center">
-            {chainId == senderChianId ? 
-            <div>
-              <img src={wizard? "/tunnel.gif":"/tunnel.png"} className="w-96 h-96 ml-auto mr-auto"></img>
-              {wizard? <img
-                src={"https://nftz.forgottenrunes.com/wizards/alt/400-nobg/wizard-" + wizard + ".png"}
-                className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"
-                onClick={()=> setWizard(wizard) 
-                }
-                alt="Wizard"
-              /> : <div className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"></div> }
+            {showPending ? 
+            <div className="p-12">
+              <div className="text-left" >
+                <button onClick={() => {setShowPending(false)}}>ᐊ back</button>
+              </div>
+              <div className="p-10">
+                <PendingTxs account={account} t1={t1.address} t2={t2.address}/>
+              </div>
             </div>
-            : chainId == receiverChianId ? 
+            :
             <div>
-              <img src={wizard? "/tunnel-rev.gif":"/tunnel.png"} className="w-96 h-96 ml-auto mr-auto"></img>
-              {wizard? <img
-                src={"https://nftz.forgottenrunes.com/wizards/alt/400-nobg/wizard-" + wizard + ".png"}
-                className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"
-                onClick={()=> setWizard(wizard) 
-                }
-                alt="Wizard"
-              /> : <div className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"></div> }
+              <div className="p-10">
+                <Account triedToEagerConnect={triedToEagerConnect} chainId={chainId} setWizard={setWizard} setShowPending={setShowPending}/>
+                <h1 className="text-6xl p-18 pb-0">Quantum Tunnel</h1>
+              </div>
+              {chainId == senderChianId ? 
+              <div>
+                <img src={wizard? "/tunnel.gif":"/tunnel.png"} className="w-96 h-96 ml-auto mr-auto"></img>
+                {wizard? <img
+                  src={"https://nftz.forgottenrunes.com/wizards/alt/400-nobg/wizard-" + wizard + ".png"}
+                  className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"
+                  onClick={()=> setWizard(wizard) 
+                  }
+                  alt="Wizard"
+                /> : <div className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"></div> }
+              </div>
+              : chainId == receiverChianId ? 
+              <div>
+                <img src={wizard? "/tunnel-rev.gif":"/tunnel.png"} className="w-96 h-96 ml-auto mr-auto"></img>
+                {wizard? <img
+                  src={"https://nftz.forgottenrunes.com/wizards/alt/400-nobg/wizard-" + wizard + ".png"}
+                  className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"
+                  onClick={()=> setWizard(wizard) 
+                  }
+                  alt="Wizard"
+                /> : <div className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"></div> }
+              </div>
+              : <div className="w-96 h-96 ml-auto mr-auto"> Unsupported Network </div>
+              }
+            <div className="mt-[130px]">
+            {isConnected && (
+              <section>
+                <WizardVerification chainId={chainId} wizard={wizard} setWizard={setWizard} show={show} setShow={setShow} t1={t1} t2={t2} qt1={qt1} qt2={qt2}/>
+              </section>
+            )}
             </div>
-            : <div className="w-96 h-96 ml-auto mr-auto"> Unsupported Network </div>
-            }
           </div>
-          <div className="mt-[130px]">
-          {isConnected && (
-            <section>
-              <WizardVerification chainId={chainId} wizard={wizard} setWizard={setWizard} show={show} setShow={setShow} t1={t1} t2={t2} qt1={qt1} qt2={qt2}/>
-            </section>
-          )}
-          </div>
-          <PendingTxs txs={["0x8a89a10f0d0ab8e4c787eae747ebaf7651af0a11a3264989eebd6db00c8eda75", "0xda8e1fd6160cf24a5bda27ca7e1f51b0e581561a03ad714a85677647a3aab5fe"]}/>
+          }
         </div>
       </main>
 
