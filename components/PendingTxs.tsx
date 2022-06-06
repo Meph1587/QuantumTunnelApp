@@ -38,7 +38,7 @@ const PendingTxs = ({account, t1, t2}) => {
 
               <div className="text-left p-1 ml-5 w-32">
                 <p className="text-gray-500">TransferId: </p>
-                <u><a target="_blank" href={"https://testnet.amarok.connextscan.io/tx/" + transfer.transferId}>
+                <u><a target="_blank" rel="noreferrer" href={"https://testnet.amarok.connextscan.io/tx/" + transfer.transferId}>
                   {" " + transfer.transferId.slice(0,6) + "..." + transfer.transferId.slice(62,66)}
                 </a></u>
               </div>

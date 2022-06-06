@@ -96,8 +96,8 @@ const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) =>
             {
               showDetails? 
               <div className="pt-5">
-                  <div className=""><a href={"https://rinkeby.etherscan.io/address/" + account} target="_blank">L1 Etherscan</a></div><br/>
-                  <div className=""><a href={"https://kovan.etherscan.io/address/" + account} target="_blank">L2 Etherscan</a></div><br/>
+                  <div className=""><a href={"https://rinkeby.etherscan.io/address/" + account} target="_blank" rel="noreferrer">L1 Etherscan</a></div><br/>
+                  <div className=""><a href={"https://kovan.etherscan.io/address/" + account} target="_blank" rel="noreferrer">L2 Etherscan</a></div><br/>
               </div>
               :null
             }

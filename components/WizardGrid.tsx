@@ -27,7 +27,7 @@ const WizardGrid = ({wizards, wizard, setWizard, wizardTraits,t1Address}) => {
           :
           <div>
             {chainId == 4 && wizards.length == 0? 
-              <p className="p-8">Mint testnet tokens on Etherscan: <a href={"https://rinkeby.etherscan.io/address/"+ t1Address+"#writeContract"} target="_blank"><u>here</u></a></p>
+              <p className="p-8">Mint testnet tokens on Etherscan: <a href={"https://rinkeby.etherscan.io/address/"+ t1Address+"#writeContract"} target="_blank" rel="noreferrer"><u>here</u></a></p>
               :
               <p className="p-8">No Bridged Wizards</p>
             }
