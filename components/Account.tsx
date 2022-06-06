@@ -2,7 +2,7 @@
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { injected } from "../connectors";
 
 import {switchNetwork} from "../utils/switchNetwork"
@@ -10,9 +10,6 @@ import {switchNetwork} from "../utils/switchNetwork"
 type Props = {
   triedToEagerConnect: boolean;
 };
-
-
-
 
 const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) => {
   const {

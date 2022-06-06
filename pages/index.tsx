@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import Head from "next/head";
 import {useState } from "react";
 import Account from "../components/Account";
-import WizardVerification from "../components/WizardVerfication";
+import WizardBridge from "../components/WizardBridge";
 import PendingTxs from "../components/PendingTxs";
 import useContract from "../hooks/useContract";
 import useEagerConnect from "../hooks/useEagerConnect";
@@ -86,7 +86,7 @@ function Home() {
             <div className="mt-[130px]">
             {isConnected && (
               <section>
-                <WizardVerification chainId={chainId} wizard={wizard} setWizard={setWizard} show={show} setShow={setShow} t1={t1} t2={t2} qt1={qt1} qt2={qt2}/>
+                <WizardBridge chainId={chainId} wizard={wizard} setWizard={setWizard} show={show} setShow={setShow} t1={t1} t2={t2} qt1={qt1} qt2={qt2}/>
               </section>
             )}
             </div>

@@ -1,22 +1,12 @@
-//import type { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import useTokensAreApproved from "../hooks/useTokensAreApproved";
-import useInput from "../hooks/useInput";
-import Button from "./button";
-import useENSName from "../hooks/useENSName";
-import NumericalInput from "./numericalInput";
-import {getProofForTraits, getProofForName} from "../utils/makeMerkleProof";
-import { useMemo, useState } from "react";
-import useContract from "../hooks/useContract";
-import {WizardList} from "../components/WizardGrid";
-import useStorageContract from "../hooks/useWizardStorage";
-import { abi as ForgottenRunesWizardsCultAbi } from "../contracts/ForgottenRunesWizardsCult.json";
-import { BigNumber } from "ethers";
-import {switchNetwork} from "../utils/switchNetwork"
+import { useState } from "react";
+import {WizardList} from "./WizardGrid";
+
 
 const wizardTraits = require("../data/traits.json");
 
-const WizardVerification = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, qt2 }) => {
+const WizardBridge = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, qt2 }) => {
   let { account } = useWeb3React();
 
   let isApproved = useTokensAreApproved(t1, account, qt1.address, chainId);
@@ -43,9 +33,6 @@ const WizardVerification = ({chainId,  wizard, setWizard, show, setShow, t1, t2,
   async function approveToken(){
     await t1.setApprovalForAll(qt1.address, true);
   }
-
-  //let response = useFetch("https://api.opensea.io/api/v1/assets?owner="+ENSName+"&token_ids="+wizard+"&asset_contract_address=0x521f9c7505005cfa19a8e5786a9c3c9c9f5e6f42&order_direction=desc&offset=0&limit=20")
-  
 
   return(
     <div className="flex-1 ">
@@ -98,4 +85,4 @@ const WizardVerification = ({chainId,  wizard, setWizard, show, setShow, t1, t2,
   );
 };
 
-export default WizardVerification;
+export default WizardBridge;
