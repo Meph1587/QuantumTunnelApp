@@ -67,7 +67,7 @@ const WizardVerification = ({chainId,  wizard, setWizard, show, setShow, t1, t2,
           Advanced {showAdvanced? "ᐃ":"ᐁ"}
         </button>
       </div>
-      : isTunneling ? "check Pending": null : null}
+      : null : null}
 
       <div> 
         {showAdvanced ? 
