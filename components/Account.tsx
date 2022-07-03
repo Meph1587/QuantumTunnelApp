@@ -7,6 +7,11 @@ import { injected } from "../connectors";
 
 import {switchNetwork} from "../utils/switchNetwork"
 
+
+const senderChianId = 4;
+const receiverChianId = 5;
+
+
 type Props = {
   triedToEagerConnect: boolean;
 };
@@ -84,9 +89,9 @@ const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) =>
       <div className="grid grid-flow-col grid-cols-auto p-2 h-10">
           <div className="text-left" >
             <p onClick={() => onboarding.current?.startOnboarding()}>
-              {chainId == 4 ? "Rinkeby" : chainId == 42? "Kovan": "Switch To Rinkeby Or Kovan"}
+              {chainId == senderChianId ? "Rinkeby" : chainId == receiverChianId? "Goerli": "Switch To Rinkeby Or Goerli"}
             </p>
-            <button onClick={() => {switchNetwork(chainId===42 ? 4 : 42); setWizard(null)}}>ᐊ switch ᐅ</button>
+            <button onClick={() => {switchNetwork(chainId===receiverChianId ? senderChianId : receiverChianId); setWizard(null)}}>ᐊ switch ᐅ</button>
           </div>
           <div className="text-right z-10 overflow-visible">
             <button onClick={() => setShowDetails(!showDetails)}>
@@ -97,7 +102,7 @@ const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) =>
               showDetails? 
               <div className="pt-5">
                   <div className=""><a href={"https://rinkeby.etherscan.io/address/" + account} target="_blank" rel="noreferrer">L1 Etherscan</a></div><br/>
-                  <div className=""><a href={"https://kovan.etherscan.io/address/" + account} target="_blank" rel="noreferrer">L2 Etherscan</a></div><br/>
+                  <div className=""><a href={"https://goerli.etherscan.io/address/" + account} target="_blank" rel="noreferrer">L2 Etherscan</a></div><br/>
               </div>
               :null
             }

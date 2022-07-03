@@ -2,6 +2,10 @@
 import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
+const senderChianId = 4;
+const receiverChianId = 5;
+const senderDomainId = 1111;
+const receiverDomainId = 3331;
 
 const WizardGrid = ({wizards, wizard, setWizard, wizardTraits,t1Address}) => {
   const {
@@ -26,7 +30,7 @@ const WizardGrid = ({wizards, wizard, setWizard, wizardTraits,t1Address}) => {
           ))
           :
           <div>
-            {chainId == 4 && wizards.length == 0? 
+            {chainId == senderChianId && wizards.length == 0? 
               <p className="p-8">Mint testnet tokens on Etherscan: <a href={"https://rinkeby.etherscan.io/address/"+ t1Address+"#writeContract"} target="_blank" rel="noreferrer"><u>here</u></a></p>
               :
               <p className="p-8">No Bridged Wizards</p>
@@ -44,10 +48,10 @@ const WizardGrid = ({wizards, wizard, setWizard, wizardTraits,t1Address}) => {
     const run = useCallback(async () => {
       const tokens: any = [];
       try {
-        const balance = chainId === 4 ? (await t1.balanceOf(account)).toNumber() : (await t2.balanceOf(account)).toNumber();
+        const balance = chainId === senderChianId ? (await t1.balanceOf(account)).toNumber() : (await t2.balanceOf(account)).toNumber();
         for (let i=0; i<balance; i++) {
             tokens.push(
-              chainId === 4 ? await t1.tokenOfOwnerByIndex(account,i) : await t2.tokenOfOwnerByIndex(account,i)
+              chainId === senderChianId ? await t1.tokenOfOwnerByIndex(account,i) : await t2.tokenOfOwnerByIndex(account,i)
             )
         }
       } catch (err) {

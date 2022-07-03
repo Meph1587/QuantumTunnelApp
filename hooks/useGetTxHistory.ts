@@ -13,11 +13,11 @@ function getTxs(account: string, t1:string, t2:string) {
 
     txs.concat(
       (await (
-        await fetch(`https://api-kovan.etherscan.io/api?module=account&action=tokennfttx&contractaddress=${t2}&address=${account}&page=1&offset=100&startblock=0&endblock=9999999999999999&sort=desc&apikey=2ZMJ7KEB5C5I9RP6X5AF2D5ZXMEAVSGBMD`)
+        await fetch(`https://api-goerli.etherscan.io/api?module=account&action=tokennfttx&contractaddress=${t2}&address=${account}&page=1&offset=100&startblock=0&endblock=9999999999999999&sort=desc&apikey=2ZMJ7KEB5C5I9RP6X5AF2D5ZXMEAVSGBMD`)
       ).json()).result
     )
 
-    let filtered = txs.filter(p => p.from === "0xd2f7315f100f1367bdcc135d2a91b2be87f678cf" || p.to === "0xd2f7315f100f1367bdcc135d2a91b2be87f678cf")
+    let filtered = txs.filter(p => p.from === "0x4c773b9ef22c313aa38494071c91977d84a45d27" || p.to === "0x4c773b9ef22c313aa38494071c91977d84a45d27")
     let hashes = filtered.map(f => f.hash)
 
     let originTxs = [];
@@ -41,9 +41,9 @@ function getTxs(account: string, t1:string, t2:string) {
         })).json()
 
 
-      let kovanTx = 
+      let goerliTx = 
         await (
-          await fetch('https://api.thegraph.com/subgraphs/name/connext/nxtp-amarok-runtime-v0-kovan', {
+          await fetch('https://api.thegraph.com/subgraphs/name/connext/nxtp-amarok-runtime-v0-goerli', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -64,18 +64,18 @@ function getTxs(account: string, t1:string, t2:string) {
             status: "Pending",
             transferId: rinkebyTx.data.originTransfers[0].transferId,
             origin: "Rinkeby",
-            destination: "Kovan",
+            destination: "Goerli",
             sentAt: new Date(parseInt(rinkebyTx.data.originTransfers[0].timestamp) * 1000),
             executedAt: "",
           })
         }
-        if(kovanTx.data.originTransfers.length > 0){
+        if(goerliTx.data.originTransfers.length > 0){
           originTxs.push({
             status: "Pending",
-            transferId: kovanTx.data.originTransfers[0].transferId,
-            origin: "Kovan",
+            transferId: goerliTx.data.originTransfers[0].transferId,
+            origin: "Goerli",
             destination: "Rinkeby",
-            sentAt:  new Date(parseInt(kovanTx.data.originTransfers[0].timestamp) * 1000),
+            sentAt:  new Date(parseInt(goerliTx.data.originTransfers[0].timestamp) * 1000),
             executedAt: "",
           })
         }
@@ -101,9 +101,9 @@ function getTxs(account: string, t1:string, t2:string) {
         })).json()
 
 
-      let kovanTx = 
+      let goerliTx = 
         await (
-          await fetch('https://api.thegraph.com/subgraphs/name/connext/nxtp-amarok-runtime-v0-kovan', {
+          await fetch('https://api.thegraph.com/subgraphs/name/connext/nxtp-amarok-runtime-v0-goerli', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -133,13 +133,13 @@ function getTxs(account: string, t1:string, t2:string) {
         }
 
 
-        if(kovanTx.data.destinationTransfers.length > 0 &&
-             kovanTx.data.destinationTransfers[0].status === "CompletedSlow" &&
-             tx.destination === "Kovan"){
+        if(goerliTx.data.destinationTransfers.length > 0 &&
+             goerliTx.data.destinationTransfers[0].status === "CompletedSlow" &&
+             tx.destination === "Goerli"){
           tx.status = "Completed"
-          tx.executedAt = new Date(kovanTx.data.destinationTransfers[0].executedTimestamp * 1000)
+          tx.executedAt = new Date(goerliTx.data.destinationTransfers[0].executedTimestamp * 1000)
           output.push(tx)
-        }else if (tx.destination === "Kovan"){
+        }else if (tx.destination === "Goerli"){
           tx.executedAt = null
           output.push(tx)
         }
