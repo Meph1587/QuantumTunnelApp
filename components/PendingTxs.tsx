@@ -4,8 +4,8 @@ function formatDate(p:Date) {
   return p.getDate() + "-" + p.toLocaleString('default', { month: 'short' }) + "-" +  p.getFullYear() + " " + ('0'+p.getHours()).slice(-2) + ":" +  ('0'+p.getMinutes()).slice(-2)
 }
 
-const PendingTxs = ({account, t1, t2}) => {
-  const { data } = useGetTxHistory(account, t1, t2);
+const PendingTxs = ({account, t1, t2, qt1}) => {
+  const { data } = useGetTxHistory(account, t1, t2, qt1);
 
 
   return (

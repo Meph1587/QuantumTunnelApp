@@ -3,7 +3,7 @@ import { useWeb3React } from "@web3-react/core";
 import useSWR from "swr";
 import useKeepSWRDataLiveAsBlocksArrive from "./useKeepSWRDataLiveAsBlocksArrive";
 
-function getTxs(account: string, t1:string, t2:string) {
+function getTxs(account: string, t1:string, t2:string, qt1:string) {
   return async (_: string) => {
 
     let txs = (await (
@@ -17,7 +17,7 @@ function getTxs(account: string, t1:string, t2:string) {
       ).json()).result
     )
 
-    let filtered = txs.filter(p => p.from === "0x4c773b9ef22c313aa38494071c91977d84a45d27" || p.to === "0x4c773b9ef22c313aa38494071c91977d84a45d27")
+    let filtered = txs.filter(p => p.from === qt1 || p.to === qt1)
     let hashes = filtered.map(f => f.hash)
 
     let originTxs = [];
@@ -148,14 +148,14 @@ function getTxs(account: string, t1:string, t2:string) {
   };
 }
 
-export default function useGetTxHistory(account: string, t1:string,t2:string, suspense = false) {
+export default function useGetTxHistory(account: string, t1:string,t2:string, qt1:string, suspense = false) {
   const { chainId } = useWeb3React();
 
   const shouldFetch =  typeof account === "string" ;
 
   const result = useSWR(
     shouldFetch ? ["getTxs", t1,t2, account, chainId] : null,
-    getTxs(account,t1,t2,),
+    getTxs(account,t1,t2,qt1),
     {
       suspense,
     }

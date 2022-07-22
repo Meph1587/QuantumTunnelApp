@@ -27,10 +27,10 @@ function Home() {
   let [wizard, setWizard] = useState(null)
   let [showPending, setShowPending] = useState(false)
 
-  const qt1 = useContract("0x4c773b9ef22c313aa38494071c91977d84a45d27", QT1) as QuantumTunnelL1;
-  const qt2 = useContract("0xb48e69f7cbf464ecd7fca11e129b764417876353", QT2) as QuantumTunnelL2;
-  const t1 = useContract("0xd533ea5a77e5332b59a6cefe467dee34dd78c4a2", T1) as L1Token;
-  const t2 = useContract("0x65190fe224349e9facfc8491bf2b007af3c78ce4", T2) as L2Token;
+  const qt1 = useContract("0xcca8671a84eb0dece5a7dc74bec022464893d3b0", QT1) as QuantumTunnelL1;
+  const qt2 = useContract("0x7614bfa46cfc3b158c1804e76d2e7001e07d0412", QT2) as QuantumTunnelL2;
+  const t1 = useContract("0x55444b4d80432b219c0d7bb52cb7db37ade44692", T1) as L1Token;
+  const t2 = useContract("0xc543cc078bcae4f5320539841ad45a36468fff8d", T2) as L2Token;
 
   
 
@@ -50,7 +50,7 @@ function Home() {
                 <button onClick={() => {setShowPending(false)}}>ᐊ back</button>
               </div>
               <div className="p-10">
-                <PendingTxs account={account} t1={t1.address} t2={t2.address}/>
+                <PendingTxs account={account} t1={t1.address} t2={t2.address} qt1={qt1.address}/>
               </div>
             </div>
             :

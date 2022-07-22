@@ -24,10 +24,10 @@ const WizardBridge = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, 
   
   async function tunnelWizard(origin:number){
     if (origin===senderChianId){
-      let tx = await qt1.deposit(t1.address, wizard, receiverDomainId, 0 , callbackFee, relayerFee, {value: relayerFee + callbackFee})
+      let tx = await qt1.deposit(t1.address, wizard, receiverDomainId, 0 , callbackFee, relayerFee, {value: relayerFee + callbackFee, gasLimit : 453013})
       await tx.wait()
     }else{
-      let tx = await qt2.withdraw(t1.address, wizard, callbackFee, relayerFee, {value: relayerFee + callbackFee})
+      let tx = await qt2.withdraw(t1.address, wizard, callbackFee, relayerFee, {value: relayerFee + callbackFee, gasLimit : 453013})
       await tx.wait()
     } 
     setShowAdvanced(false)
