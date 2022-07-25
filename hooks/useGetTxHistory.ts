@@ -3,22 +3,26 @@ import { useWeb3React } from "@web3-react/core";
 import useSWR from "swr";
 import useKeepSWRDataLiveAsBlocksArrive from "./useKeepSWRDataLiveAsBlocksArrive";
 
-function getTxs(account: string, t1:string, t2:string, qt1:string) {
+function getTxs(account: string, t1:string, t2:string, qt1:string, qt2:string) {
   return async (_: string) => {
 
     let txs = (await (
         await fetch(`https://api-rinkeby.etherscan.io/api?module=account&action=tokennfttx&contractaddress=${t1}&address=${account}&page=1&offset=100&startblock=0&endblock=9999999999999999&sort=desc&apikey=2ZMJ7KEB5C5I9RP6X5AF2D5ZXMEAVSGBMD`)
       ).json()).result
 
+    
+    let g_txs = (await (
+      await fetch(`https://api-goerli.etherscan.io/api?module=account&action=tokennfttx&contractaddress=${t2}&address=${account}&page=1&offset=100&startblock=0&endblock=9999999999999999&sort=desc&apikey=2ZMJ7KEB5C5I9RP6X5AF2D5ZXMEAVSGBMD`)
+    ).json()).result
 
-    txs.concat(
-      (await (
-        await fetch(`https://api-goerli.etherscan.io/api?module=account&action=tokennfttx&contractaddress=${t2}&address=${account}&page=1&offset=100&startblock=0&endblock=9999999999999999&sort=desc&apikey=2ZMJ7KEB5C5I9RP6X5AF2D5ZXMEAVSGBMD`)
-      ).json()).result
+
+    txs = txs.concat(
+      g_txs
     )
 
-    let filtered = txs.filter(p => p.from === qt1 || p.to === qt1)
+    let filtered = txs.filter(p => (p.from === qt1 || p.to === qt1 || p.to == "0x0000000000000000000000000000000000000000"))
     let hashes = filtered.map(f => f.hash)
+    console.log(hashes)
 
     let originTxs = [];
     for await (const tx of hashes) {
@@ -148,14 +152,14 @@ function getTxs(account: string, t1:string, t2:string, qt1:string) {
   };
 }
 
-export default function useGetTxHistory(account: string, t1:string,t2:string, qt1:string, suspense = false) {
+export default function useGetTxHistory(account: string, t1:string,t2:string, qt1:string, qt2:string, suspense = false) {
   const { chainId } = useWeb3React();
 
   const shouldFetch =  typeof account === "string" ;
 
   const result = useSWR(
     shouldFetch ? ["getTxs", t1,t2, account, chainId] : null,
-    getTxs(account,t1,t2,qt1),
+    getTxs(account,t1,t2,qt1,qt2),
     {
       suspense,
     }
