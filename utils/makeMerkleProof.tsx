@@ -1,13 +1,17 @@
 const { MerkleTree } = require('merkletreejs')
 const keccak256 = require('keccak256')
+
 const wizardTraits = require("../data/traits.json");
 import { ethers } from "ethers";
+
 // Flat version for easier import
 
 export function getProofForTraits(traitsToProve:number[]){
     let tree = makeTreeFromTraits(wizardTraits.traits)
 
     const leaf = keccak256(encode(traitsToProve))
+    console.log(leaf)
+    console.log(tree.getHexRoot())
     const proof = tree.getHexProof(leaf, keccak256, { hashLeaves: true, sortPairs: true })
     return proof
 }
@@ -57,10 +61,10 @@ export function makeTreeFromTraits(leaves:number[][]){
 
     const leavesEncoded = [];
     for(let i=0 ; i< leaves.length; i++){
-        leavesEncoded.push(encode(leaves[i]));
+        let n = leaves[i]
+        n.push(341)
+        leavesEncoded.push(encode(n).slice(0,38));
     }
-
-    
     const tree = new MerkleTree(leavesEncoded, keccak256, { hashLeaves: true, sortPairs: true })
 
     return tree;

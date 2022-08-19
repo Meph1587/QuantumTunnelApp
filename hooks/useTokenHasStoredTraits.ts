@@ -1,0 +1,37 @@
+import useSWR from "swr";
+import type { LostGrimoireStorage } from "../contracts/types";
+import useKeepSWRDataLiveAsBlocksArrive from "./useKeepSWRDataLiveAsBlocksArrive";
+
+
+function getUseTokenHasStoredTraits(contract: LostGrimoireStorage, token: string, tokenId:number) {
+  return async (_: string) => {
+    const resp = await contract.hasData(token, tokenId);
+    return resp
+  };
+}
+
+export default function useTokenHasStoredTraits(
+  storage: LostGrimoireStorage,
+  token: string,
+  tokenId: number,
+  suspense = false
+){
+
+  const shouldFetch =
+    typeof token === "string" &&
+    typeof tokenId === "string" &&
+    !!storage;
+
+  const result = useSWR(
+    shouldFetch ? ["UseTokenHasStoredTraits",storage, token, tokenId] : null,
+    getUseTokenHasStoredTraits(storage, token, tokenId),
+    {
+      suspense,
+    }
+  );
+  console.log(result.data)
+
+  useKeepSWRDataLiveAsBlocksArrive(result.mutate);
+
+  return result;
+}

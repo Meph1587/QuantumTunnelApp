@@ -1,19 +1,17 @@
 import { useWeb3React } from "@web3-react/core";
-import useTokensAreApproved from "../hooks/useTokensAreApproved";
-import { useState } from "react";
-import {WizardList} from "./WizardGrid";
 
-const senderChianId = 4;
-const receiverChianId = 5;
-const senderDomainId = 1111;
-const receiverDomainId = 3331;
+import { useState } from "react";
 
 const wizardTraits = require("../data/traits.json");
 
+const senderChianId = 4;
+const receiverChianId = 69;
+const senderDomainId = 1001;
+const receiverDomainId = 10011;
+
+
 const WizardBridge = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, qt2 }) => {
   let { account } = useWeb3React();
-
-  let isApproved = useTokensAreApproved(t1, account, qt1.address, chainId);
 
   let [showAdvanced, setShowAdvanced] = useState(false)
   let [isTunneling, setIsTunneling] = useState(true)
@@ -24,18 +22,15 @@ const WizardBridge = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, 
   
   async function tunnelWizard(origin:number){
     if (origin===senderChianId){
-      let tx = await qt1.deposit(t1.address, wizard, receiverDomainId, 0 , callbackFee, relayerFee, {value: relayerFee + callbackFee, gasLimit : 453013})
+      let fee = await qt1.estimateMessageFee(t1.address, wizard, receiverDomainId);
+      let tx = await qt1.spawnAltToken(t1.address, wizard, receiverDomainId, {value: fee})
       await tx.wait()
     }else{
-      let tx = await qt2.withdraw(t1.address, wizard, callbackFee, relayerFee, {value: relayerFee + callbackFee, gasLimit : 453013})
+      let tx = await qt2.withdraw(t1.address, wizard, callbackFee, relayerFee, {value: relayerFee + callbackFee})
       await tx.wait()
     } 
     setShowAdvanced(false)
     setWizard(null)
-  }
-
-  async function approveToken(){
-    await t1.setApprovalForAll(qt1.address, true);
   }
 
   return(
@@ -44,13 +39,13 @@ const WizardBridge = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, 
         {wizard? <div>{name[1]}</div>: "-"}
       </div>
         <button className="border-solid border-white border-2  p-4 pl-10 pr-10 rounded-xs w-96"
-          onClick={() => {wizard? isApproved.data || chainId===receiverChianId ? tunnelWizard(chainId): approveToken():setShow(!show)}}
+          onClick={() => {wizard? tunnelWizard(chainId): setShow(!show)}}
         >
-          {wizard? isApproved.data || chainId===receiverChianId ? 'Tunnel Wizard' : `Approve Token`: `Select Wizard`}
+          {wizard? 'Tunnel Wizard' :`Select Wizard`}
         </button>
        
 
-      {wizard ? isApproved.data || chainId===receiverChianId ? 
+      {wizard ? 
       <div>
         <button className="text-s pt-6 rounded-xs w-96"
           onClick={() => setShowAdvanced(!showAdvanced)}
@@ -58,7 +53,7 @@ const WizardBridge = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, 
           Advanced {showAdvanced? "ᐃ":"ᐁ"}
         </button>
       </div>
-      : null : null}
+      : null}
 
       <div> 
         {showAdvanced ? 
@@ -81,10 +76,7 @@ const WizardBridge = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, 
       
       <br></br>
         
-      <div className="pt-1">
-      {show ?  
-        <WizardList  account={account} chainId = {chainId} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2}/> : ""  }
-      </div>
+      
     </div>
   );
 };

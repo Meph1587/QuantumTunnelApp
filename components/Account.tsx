@@ -9,7 +9,7 @@ import {switchNetwork} from "../utils/switchNetwork"
 
 
 const senderChianId = 4;
-const receiverChianId = 5;
+const receiverChianId = 69;
 
 
 type Props = {
@@ -89,7 +89,7 @@ const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) =>
       <div className="grid grid-flow-col grid-cols-auto p-2 h-10">
           <div className="text-left" >
             <p onClick={() => onboarding.current?.startOnboarding()}>
-              {chainId == senderChianId ? "Rinkeby" : chainId == receiverChianId? "Goerli": "Switch To Rinkeby Or Goerli"}
+              {chainId == senderChianId ? "Rinkeby" : chainId == receiverChianId? "Optimism(Kovan)": "Switch To Rinkeby Or Optimism(Kovan)"}
             </p>
             <button onClick={() => {switchNetwork(chainId===receiverChianId ? senderChianId : receiverChianId); setWizard(null)}}>ᐊ switch ᐅ</button>
           </div>
@@ -102,7 +102,7 @@ const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) =>
               showDetails? 
               <div className="pt-5">
                   <div className=""><a href={"https://rinkeby.etherscan.io/address/" + account} target="_blank" rel="noreferrer">L1 Etherscan</a></div><br/>
-                  <div className=""><a href={"https://goerli.etherscan.io/address/" + account} target="_blank" rel="noreferrer">L2 Etherscan</a></div><br/>
+                  <div className=""><a href={"https://kovan-optimistic.etherscan.io//address/" + account} target="_blank" rel="noreferrer">L2 Etherscan</a></div><br/>
               </div>
               :null
             }

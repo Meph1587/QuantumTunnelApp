@@ -3,28 +3,29 @@ import { useEffect, useState } from "react";
 import { injected } from "../connectors";
 
 export default function useEagerConnect() {
-  const { activate, active } = useWeb3React();
+  const { connector, isActive } = useWeb3React();
 
   const [tried, setTried] = useState(false);
 
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
       if (isAuthorized) {
-        activate(injected, undefined, true).catch(() => {
-          setTried(true);
-        });
+        connector.activate(injected, undefined, true).then(() => {})
+        .catch(
+          setTried(true)
+        );
       } else {
         setTried(true);
       }
     });
-  }, [activate]);
+  }, [connector.activate]);
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
-    if (!tried && active) {
+    if (!tried && isActive) {
       setTried(true);
     }
-  }, [tried, active]);
+  }, [tried, isActive]);
 
   return tried;
 }
