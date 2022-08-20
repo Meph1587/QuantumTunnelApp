@@ -1,4 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
+import {WizardList} from "../components/WizardGrid";
 
 import { useState } from "react";
 
@@ -10,8 +11,8 @@ const senderDomainId = 1001;
 const receiverDomainId = 10011;
 
 
-const WizardBridge = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, qt2 }) => {
-  let { account } = useWeb3React();
+const WizardBridge = ({l1Id,l2Id,  wizard, setWizard, show, setShow, t1, t2, qt1, qt2 }) => {
+  let { account, chainId } = useWeb3React();
 
   let [showAdvanced, setShowAdvanced] = useState(false)
   let [isTunneling, setIsTunneling] = useState(true)
@@ -34,49 +35,53 @@ const WizardBridge = ({chainId,  wizard, setWizard, show, setShow, t1, t2, qt1, 
   }
 
   return(
-    <div className="flex-1 ">
-      <div className="p-8">
-        {wizard? <div>{name[1]}</div>: "-"}
-      </div>
+    
+    <div className="grid grid-flow-col grid-cols-2 mt-24 ">
+      <div className="p-4 mt-4 text-center"> 
+        {chainId == l1Id ? 
+          <div>
+            <img src={wizard? "/tunnel.gif":"/tunnel.png"} className="w-96 h-96 ml-auto mr-auto"></img>
+            {wizard? <img
+              src={"https://nftz.forgottenrunes.com/wizards/alt/400-nobg/wizard-" + wizard + ".png"}
+              className="w-[94px] h-[94px] z-10 ml-auto mr-auto mt-[-238px]"
+              onClick={()=> setWizard(wizard) 
+              }
+              alt="Wizard"
+            /> : <div className="w-[94px] h-[94px] z-10 ml-auto mr-auto mt-[-238px]"></div> }
+          </div>
+          : chainId == l2Id ? 
+          <div>
+            <img src={wizard? "/tunnel-rev.gif":"/tunnel.png"} className="w-96 h-96 ml-auto mr-auto"></img>
+            {wizard? <img
+              src={"https://nftz.forgottenrunes.com/wizards/alt/400-nobg/wizard-" + wizard + ".png"}
+              className="w-[94px] h-[94px] z-10 ml-auto mr-auto mt-[-238px]"
+              onClick={()=> setWizard(wizard) 
+              }
+              alt="Wizard"
+            /> : <div className="w-[94px] h-[94px] z-10 ml-auto mr-auto mt-[-238px]"></div> }
+          </div>
+        : <div className="w-96 h-96 ml-auto mr-auto"> Unsupported Network </div>
+        }
+        <div className="p-8 mt-36 text-[12px] ">
+          {wizard? <div>{name[1]}</div>: "-"}
+        </div>
         <button className="border-solid border-white border-2  p-4 pl-10 pr-10 rounded-xs w-96"
-          onClick={() => {wizard? tunnelWizard(chainId): setShow(!show)}}
+            onClick={() => {wizard? tunnelWizard(chainId): setShow(!show)}}
         >
           {wizard? 'Tunnel Wizard' :`Select Wizard`}
         </button>
-       
-
-      {wizard ? 
-      <div>
-        <button className="text-s pt-6 rounded-xs w-96"
-          onClick={() => setShowAdvanced(!showAdvanced)}
-        >
-          Advanced {showAdvanced? "ᐃ":"ᐁ"}
-        </button>
-      </div>
-      : null}
-
-      <div> 
-        {showAdvanced ? 
-          <div className="text-gray-500">
-            <p className="text-xs pt-4 pb-4" > Only edit if you know what you are doing !!</p>
-            <div className="inline-flex pt-4 pb-4">
-              <p className="text-xs pr-5" >Relayer Fee: </p>
-              <input className="text-xs h-5 p-2 bg-black border-solid border-gray-500 border-2 " type="text" value={relayerFee} onChange={(e) => setRelayerFee(parseInt(e.target.value))}></input>
-              <p className="text-xs pl-5 text-gray-500" >(wei)</p>
-            </div>
-            <br/>
-            <div className="inline-flex pt-4 pb-4">
-              <p className="text-xs pr-5" >Callback Fee: </p>
-              <input className="text-xs h-5 p-2 bg-black border-solid border-gray-500 border-2 " type="text" value={callbackFee} onChange={(e) => setCallbackFee(parseInt(e.target.value))}></input>
-              <p className="text-xs pl-5 text-gray-500" >(wei)</p>
-            </div>
-          </div>
-        :null}
       </div>
       
-      <br></br>
-        
-      
+
+      <div className="border-l-2 p-4 border-solid border-gray-500 "> 
+        <p className="pb-2">
+          Your Tokens
+        </p>
+        <div className=" max-h-[550px] p-8 overflow-y-scroll scrollbar">
+          
+          <WizardList l1Id={l1Id} account={account} chainId = {chainId} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2}/> 
+        </div>
+      </div>
     </div>
   );
 };

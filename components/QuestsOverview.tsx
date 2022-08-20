@@ -1,6 +1,6 @@
 import type { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-import {WizardList} from "../components/WizardGrid";
+import {WizardList} from "./WizardGrid";
 import useTokenHasStoredTraits from "../hooks/useTokenHasStoredTraits";
 import useGetTraits from "../hooks/useGetTraits";
 import useInput from "../hooks/useInput";
@@ -10,7 +10,7 @@ import { useMemo, useState } from "react";
 
 
 
-const TokenStorage = ({ l1Id, token, tokenId, storage, plugin, setWizard, t1, t2 }) => {
+const TokenStorage = ({ token, tokenId, storage, plugin, setWizard, t1, t2 }) => {
   const wizardTraits = require("../data/traits.json");
   let traits = wizardTraits.traits[tokenId]
   let name = wizardTraits.names[tokenId]
@@ -34,19 +34,16 @@ const TokenStorage = ({ l1Id, token, tokenId, storage, plugin, setWizard, t1, t2
       setIsStoring(true);
       console.log(traits.slice(0,8))
 
-      let tx = await plugin.storeTokenData(tokenId, name[1], traits.slice(0,8), proofName, proofTraits, {gasLimit:191527 })
-
-      await tx.wait();
-       
-      setWizard(tokenId);
-      setIsStoring(false);
+       let tx = await plugin.storeTokenData(tokenId, name[1], traits.slice(0,8), proofName, proofTraits, {gasLimit:191527 })
       
+      const result = await tx.wait();
+      setIsStoring(false);
+
     } catch (error) {
       console.log(error)
       setIsStoring(false);
     }
   }
-
 
   return(
     <div className="grid grid-flow-col grid-cols-2 mt-24 text-center">
@@ -91,7 +88,7 @@ const TokenStorage = ({ l1Id, token, tokenId, storage, plugin, setWizard, t1, t2
           Your Tokens
         </p>
         <div className=" max-h-[550px] p-8 overflow-y-scroll scrollbar">
-          <WizardList l1Id={l1Id} account={account} chainId = {chainId} wizard={tokenId} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2}/> 
+          <WizardList  account={account} chainId = {chainId} wizard={tokenId} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2}/> 
         </div>
       </div>
       

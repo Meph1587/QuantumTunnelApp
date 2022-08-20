@@ -5,7 +5,6 @@ import { UserRejectedRequestError } from "@web3-react/injected-connector";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { injected } from "../connectors";
 
-import {switchNetwork} from "../utils/switchNetwork"
 
 
 const senderChianId = 4;
@@ -16,13 +15,11 @@ type Props = {
   triedToEagerConnect: boolean;
 };
 
-const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) => {
+const Account = ({ triedToEagerConnect}) => {
   const {
-    active,
-    error,
-    activate,
+    isActive,
+    connector,
     account,
-    setError,
   } = useWeb3React();
 
   // initialize metamask onboarding
@@ -34,17 +31,13 @@ const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) =>
 
   // manage connecting state for injected connector
   const [connecting, setConnecting] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
   useEffect(() => {
-    if (active || error) {
+    if (!isActive) {
       setConnecting(false);
       onboarding.current?.stopOnboarding();
     }
-  }, [active, error]);
+  }, [isActive]);
 
-  if (error) {
-    return null;
-  }
 
   if (!triedToEagerConnect) {
     return null;
@@ -63,12 +56,12 @@ const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) =>
             onClick={() => {
               setConnecting(true);
 
-              activate(injected, undefined, true).catch((error) => {
+               connector.activate(injected, undefined, true).then(()=>console.log("connected")).catch((error) => {
                 // ignore the error if it's a user rejected request
                 if (error instanceof UserRejectedRequestError) {
                   setConnecting(false);
                 } else {
-                  setError(error);
+                  console.log(error)
                 }
               });
             }}
@@ -86,28 +79,7 @@ const Account = ({ triedToEagerConnect, chainId, setWizard, setShowPending }) =>
     );
   }else{
     return (
-      <div className="grid grid-flow-col grid-cols-auto p-2 h-10">
-          <div className="text-left" >
-            <p onClick={() => onboarding.current?.startOnboarding()}>
-              {chainId == senderChianId ? "Rinkeby" : chainId == receiverChianId? "Optimism(Kovan)": "Switch To Rinkeby Or Optimism(Kovan)"}
-            </p>
-            <button onClick={() => {switchNetwork(chainId===receiverChianId ? senderChianId : receiverChianId); setWizard(null)}}>ᐊ switch ᐅ</button>
-          </div>
-          <div className="text-right z-10 overflow-visible">
-            <button onClick={() => setShowDetails(!showDetails)}>
-              {account.slice(0,6)+"..." + account.slice(28,32)} {showDetails? "ᐃ":"ᐁ"}
-            </button>
-            <div className="pt-5"><button onClick={ () => {setShowPending(true)}}>Tx History</button></div>
-            {
-              showDetails? 
-              <div className="pt-5">
-                  <div className=""><a href={"https://rinkeby.etherscan.io/address/" + account} target="_blank" rel="noreferrer">L1 Etherscan</a></div><br/>
-                  <div className=""><a href={"https://kovan-optimistic.etherscan.io//address/" + account} target="_blank" rel="noreferrer">L2 Etherscan</a></div><br/>
-              </div>
-              :null
-            }
-          </div>
-      </div>
+      <div></div>
   )
   }
 };

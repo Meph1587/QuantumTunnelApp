@@ -1,38 +1,43 @@
 import { useWeb3React} from "@web3-react/core";
 import Head from "next/head";
 import {useState } from "react";
-import Account from "../components/Account";
 import WizardBridge from "../components/WizardBridge";
-import {WizardList} from "../components/WizardGrid";
 import TokenStorage from "../components/TokenStorage";
+import BaseQuestList from "../components/QuestsList";
+import NavBar from "../components/NavBar";
 import PendingTxs from "../components/PendingTxs";
 import useContract from "../hooks/useContract";
-import useEagerConnect from "../hooks/useEagerConnect";
 const QT1 = require( "contracts/abi/QuantumTunnelL1.json");
 const QT2 = require( "contracts/abi/QuantumTunnelL2.json");
 const T1  = require("contracts/abi/IERC721Enumerable.json");
 const T2  = require("contracts/abi/AltWizards.json");
 const SRG  = require("contracts/abi/WizardStoragePlugin.json");
 const LGS  = require("contracts/abi/LostGrimoireStorage.json");
-import type { ERC721Enumerable, AltWizards, QuantumTunnelL1, QuantumTunnelL2, WizardStoragePlugin, LostGrimoireStorage } from "../contracts/types";
+const TVRN  = require("contracts/abi/JollyTavern.json");
+const BQ  = require("contracts/abi/BaseQuest.json");
+import type { BaseQuest, JollyTavern,  ERC721Enumerable, AltWizards, QuantumTunnelL1, QuantumTunnelL2, WizardStoragePlugin, LostGrimoireStorage } from "../contracts/types";
 //import create from 'zustand';
 
 const wizardTraits = require("../data/traits.json");
 
-const senderChianId = 4;
-const receiverChianId = 69;
+const l1Id = 4;
+const l2Id = 69;
 
+export enum Page {
+  Tunnel,
+  Storage,
+  Quests,
+  History,
+}
 
 function Home() {
 
   const { account, chainId} = useWeb3React();
-  const triedToEagerConnect = useEagerConnect();
   const isConnected = typeof account === "string";
   
   let [show, setShow] = useState(false)
-  let [page, setPage] = useState("tunnel")
+  let [page, setPage] = useState(Page.Tunnel)
   let [wizard, setWizard] = useState(null)
-  let [showPending, setShowPending] = useState(false)
 
   const qt1 = useContract("0x5e0f60ee176c268bebb67e3dca191c11275aa36b", QT1) as QuantumTunnelL1;
   const qt2 = useContract("0xb12bb899ca6de03ed0149e0cbf851633608c1e03", QT2) as QuantumTunnelL2;
@@ -40,75 +45,32 @@ function Home() {
   const t2 = useContract("0xc1a8fd912c2fc45255ddf3aa3deb25af0023f549", T2) as AltWizards;
   const plugin = useContract("0x7614bfa46cfc3b158c1804e76d2e7001e07d0412", SRG) as WizardStoragePlugin;
   const storage = useContract("0xef7aaf4f05a5ebf46c9357325c6a004698a13b4a", LGS) as LostGrimoireStorage;
-
+  const tavern = useContract("0x3d5cacf72b9675905d042fe668a0568c2ab79a69", TVRN) as JollyTavern;
+  const bq = useContract("0x46569c68da49baa5b42c5c4e445d53dc0fd0f0e4", BQ) as BaseQuest;
 
   return (
-    <div style={{"backgroundColor":"black", "color":"white", "height":"100%", "overflow": "scroll"}}>
-      <Head>
-        <title>Quantum Tunnel </title>
+    <div className="background-black text-white">
+      <Head >
+        <title>Forgotten Quests </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="text-center">
-        <button onClick={() => {setPage("storage")}}>storage</button>
-        <button onClick={() => {setPage("tunnel")}}>tunnel</button>
+        <NavBar l1Id={l1Id} l2Id={l2Id} setPage={setPage} setWizard={setWizard}  ></NavBar>
           <div className="text-center">
-            {showPending ? 
-            <div className="p-12">
-              <div className="text-left" >
-                <button onClick={() => {setShowPending(false)}}>ᐊ back</button>
-              </div>
-              <div className="p-10">
-                <PendingTxs account={account} t1={t1.address} t2={t2.address} qt1={qt1.address} qt2={qt2.address}/>
-              </div>
-            </div>
-            :
-            <div>
-              <div className="p-10">
-                <Account triedToEagerConnect={triedToEagerConnect} chainId={chainId} setWizard={setWizard} setShowPending={setShowPending}/>
-                <h1 className="text-6xl p-18 pb-0">Quantum Tunnel</h1>
-              </div>
-              {chainId == senderChianId ? 
-              <div>
-                <img src={wizard? "/tunnel.gif":"/tunnel.png"} className="w-96 h-96 ml-auto mr-auto"></img>
-                {wizard? <img
-                  src={"https://nftz.forgottenrunes.com/wizards/alt/400-nobg/wizard-" + wizard + ".png"}
-                  className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"
-                  onClick={()=> setWizard(wizard) 
-                  }
-                  alt="Wizard"
-                /> : <div className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"></div> }
-              </div>
-              : chainId == receiverChianId ? 
-              <div>
-                <img src={wizard? "/tunnel-rev.gif":"/tunnel.png"} className="w-96 h-96 ml-auto mr-auto"></img>
-                {wizard? <img
-                  src={"https://nftz.forgottenrunes.com/wizards/alt/400-nobg/wizard-" + wizard + ".png"}
-                  className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"
-                  onClick={()=> setWizard(wizard) 
-                  }
-                  alt="Wizard"
-                /> : <div className="w-[100px] h-[100px] z-10 ml-auto mr-auto mt-[-238px]"></div> }
-              </div>
-              : <div className="w-96 h-96 ml-auto mr-auto"> Unsupported Network </div>
-              }
-            <div className="mt-[130px]">
+            
             {isConnected && (
               <section>
-                {page ==="tunnel" ? 
-                <WizardBridge chainId={chainId} wizard={wizard} setWizard={setWizard} show={show} setShow={setShow} t1={t1} t2={t2} qt1={qt1} qt2={qt2}/>
-                :
-                <TokenStorage token={t2.address} tokenId={wizard} storage={storage} plugin={plugin} show={show} setShow={setShow} ></TokenStorage>
+                {page === Page.Tunnel ?
+                <WizardBridge l1Id={l1Id} l2Id={l2Id}  wizard={wizard} setWizard={setWizard} show={show} setShow={setShow} t1={t1} t2={t2} qt1={qt1} qt2={qt2}/>
+                : page === Page.Storage ?
+                <TokenStorage l1Id={l1Id} token={t2.address} tokenId={wizard} storage={storage} plugin={plugin} setWizard={setWizard} t1={t1} t2={t2}></TokenStorage>
+                : page === Page.History ?
+                <PendingTxs account={account} t1={t1.address} t2={t2.address} qt1={qt1.address} qt2={qt2.address}/>
+                : <BaseQuestList l1Id={l1Id} bq={bq} token={t2.address} tokenId={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2} ></BaseQuestList>
+                  
             }</section>
-            )}
-            <div className="pt-1">
-              {show ?  
-                <WizardList  account={account} chainId = {chainId} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2}/> : ""  }
-              </div>
-            </div>
-          </div>
-          }
-        </div>
+            )}</div>
       </main>
 
     </div>
