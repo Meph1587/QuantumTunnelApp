@@ -15,7 +15,9 @@ const SRG  = require("contracts/abi/WizardStoragePlugin.json");
 const LGS  = require("contracts/abi/LostGrimoireStorage.json");
 const TVRN  = require("contracts/abi/JollyTavern.json");
 const BQ  = require("contracts/abi/BaseQuest.json");
-import type { BaseQuest, JollyTavern,  ERC721Enumerable, AltWizards, QuantumTunnelL1, QuantumTunnelL2, WizardStoragePlugin, LostGrimoireStorage } from "../contracts/types";
+const GEMS  = require("contracts/abi/SoulGems.json");
+import type { BaseQuest, JollyTavern,  ERC721Enumerable, AltWizards, QuantumTunnelL1, QuantumTunnelL2, WizardStoragePlugin, LostGrimoireStorage, SoulGems } from "../contracts/types";
+import { SoulGemsList } from "../components/SoulGems";
 //import create from 'zustand';
 
 const wizardTraits = require("../data/traits.json");
@@ -28,6 +30,7 @@ export enum Page {
   Storage,
   Quests,
   History,
+  SoulGems,
 }
 
 function Home() {
@@ -46,7 +49,8 @@ function Home() {
   const plugin = useContract("0x7614bfa46cfc3b158c1804e76d2e7001e07d0412", SRG) as WizardStoragePlugin;
   const storage = useContract("0xef7aaf4f05a5ebf46c9357325c6a004698a13b4a", LGS) as LostGrimoireStorage;
   const tavern = useContract("0x3d5cacf72b9675905d042fe668a0568c2ab79a69", TVRN) as JollyTavern;
-  const bq = useContract("0x46569c68da49baa5b42c5c4e445d53dc0fd0f0e4", BQ) as BaseQuest;
+  const bq = useContract("0xe6e27850a6dfad281073d0998c7527099a6575b4", BQ) as BaseQuest;
+  const gems = useContract("0xf1b1aa31b9d6e4b0d2ccefc75e610a972dfa4d1d", GEMS) as SoulGems;
 
   return (
     <div className="background-black text-white">
@@ -67,8 +71,9 @@ function Home() {
                 <TokenStorage l1Id={l1Id} token={t2.address} tokenId={wizard} storage={storage} plugin={plugin} setWizard={setWizard} t1={t1} t2={t2}></TokenStorage>
                 : page === Page.History ?
                 <PendingTxs account={account} t1={t1.address} t2={t2.address} qt1={qt1.address} qt2={qt2.address}/>
-                : <BaseQuestList l1Id={l1Id} bq={bq} token={t2.address} tokenId={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2} ></BaseQuestList>
-                  
+                : page === Page.SoulGems ?
+                 <SoulGemsList l1Id={l1Id} bq={bq} token={t2.address} tokenId={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2} gems={gems} ></SoulGemsList>
+                :   <BaseQuestList l1Id={l1Id} bq={bq} token={t2.address} tokenId={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2} plugin={plugin} ></BaseQuestList>
             }</section>
             )}</div>
       </main>

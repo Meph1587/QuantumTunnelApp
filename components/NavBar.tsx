@@ -35,6 +35,7 @@ const NavBar = ({ l1Id, l2Id,setPage, setWizard}) => {
                         <button className="p-2 underline underline-offset-2 text-xl" onClick={() => {setPage(Page.Tunnel)}}>Tunnel</button>
                         <button className="p-2 underline underline-offset-2 text-xl" onClick={() => {setPage(Page.Storage)}}>Storage</button>
                         <button className="p-2 underline underline-offset-2 text-xl" onClick={() => {setPage(Page.Quests)}}>Quests</button>
+                        <button className="p-2 underline underline-offset-2 text-xl" onClick={() => {setPage(Page.SoulGems)}}>SoulGems</button>
                     </div>
                     :<div>
                         <button className="p-2 underline underline-offset-2 text-xl" onClick={() => {setPage(Page.Tunnel)}}>Tunnel</button>
