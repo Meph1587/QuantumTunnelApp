@@ -156,8 +156,8 @@ export const BaseQuestList = ({l1Id, token, tokenId, bq, setWizard, wizardTraits
     <div>
        <div className=" p-4"> 
           <div className="grid grid-flow-col grid-cols-3  ">
-            <div className=" col-span-2 p-10 ">
-                <div className="bg-map bg-contain h-[550px]">
+            <div className=" col-span-2 p-10 text-center">
+                <div className="bg-map bg-contain bg-no-repeat h-[550px]">
                   {/* <button className="relative block w-6 h-6 color-white p-[-10px] pointer right-[-12px] bottom-[-12px]  border-[12px] rounded-xl border-white text-8"
                     onClick={}
                   >
