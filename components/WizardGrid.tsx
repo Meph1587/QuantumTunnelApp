@@ -56,7 +56,7 @@ const WizardGrid = ({l1Id, wizards, wizard, setWizard, wizardTraits,t1Address}) 
         console.log("err: ", err);
       }
       setWizards(tokens);
-    } ,[account,  t1, t2, wizard])
+    } ,[account,  t1, t2, wizard, chainId ])
     
     useEffect(() => {
       run();
@@ -65,11 +65,7 @@ const WizardGrid = ({l1Id, wizards, wizard, setWizard, wizardTraits,t1Address}) 
     return ( 
       <div>
         <WizardGrid l1Id={l1Id} wizards={wizards} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1Address={t1.address}/>
-        <div>
-          {chainId == l1Id ?
-            <p className="p-8">Mint testnet tokens on Etherscan: <a href={"https://rinkeby.etherscan.io/address/"+ t1.address+"#writeContract"} target="_blank" rel="noreferrer"><u>here</u></a></p>
-          : <p className="p-8">Tokens take 3-5min to show up after bridging</p>}
-        </div>
+       
       </div>
     )
   }

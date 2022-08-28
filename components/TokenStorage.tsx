@@ -4,9 +4,10 @@ import {WizardList} from "../components/WizardGrid";
 import useTokenHasStoredTraits from "../hooks/useTokenHasStoredTraits";
 import useGetTraits from "../hooks/useGetTraits";
 import useInput from "../hooks/useInput";
-import useENSName from "../hooks/useENSName";
 import {getProofForTraits, getProofForName} from "../utils/makeMerkleProof";
-import { useMemo, useState } from "react";
+import { useCallback, useState,useEffect } from "react";
+import {getTraitNames} from "../utils/getTraitNames";
+import { BaseProvider } from "@ethersproject/providers";
 
 
 
@@ -14,13 +15,31 @@ const TokenStorage = ({ l1Id, token, tokenId, storage, plugin, setWizard, t1, t2
   const wizardTraits = require("../data/traits.json");
   let traits = wizardTraits.traits[tokenId]
   let name = wizardTraits.names[tokenId]
-  const { account, chainId } = useWeb3React();
+  const { account, chainId, provider } = useWeb3React();
+
+
+  let p = provider as unknown as BaseProvider
+  let [traitNames, setTraitNames] = useState(false)
+
+  const run = useCallback(async () => {
+    let traits: any = [];
+    try { 
+      traits = await getTraitNames(plugin,p, wizardTraits.traits[tokenId])
+      console.log(traitNames)
+     } catch (err) {
+      console.log("err: ", err);
+    }
+    setTraitNames(traits);
+  } ,[account,  tokenId])
+
+  useEffect(() => {
+    run();
+  }, [run]);
 
 
   const isVerified =  useTokenHasStoredTraits(storage, token, tokenId?.toNumber());
   const traitsStored =  useGetTraits(plugin,  tokenId?.toNumber());
   
-  const ENSName = useENSName(account);
   let [isStoring, setIsStoring] = useState(false)
 
   async function verifyWizard() {
@@ -49,30 +68,25 @@ const TokenStorage = ({ l1Id, token, tokenId, storage, plugin, setWizard, t1, t2
 
 
   return(
-    <div className="grid grid-flow-col grid-cols-2 mt-24 text-center">
+    <div className="grid grid-flow-col grid-cols-2 mt-20 text-center">
       <div className="flex-1 pl-8">
         <div className="p-8 text-[16px] ">
           {tokenId? <div>{name[1]}</div>: "-"}
         </div>
         <div className="grid grid-flow-col grid-cols-2 ">
           <div>
-            <div className="w-[300px] ml-auto">
+            <div className="w-[300px] ml-auto mt-8">
               <img src={"https://nftz.forgottenrunes.com/wizards/alt/400-nobg/wizard-" + tokenId + ".png"} alt=""/>
             </div>
           </div>
-          <div className="text-left mt-12">{tokenId? 
+          <div className="text-left ml-16 border-left h-[360px]">{tokenId? 
             <div>
-              <h3>
-              Traits:
-              </h3>
-              <p className="mt-2"> Background: {traits[1] != 7777 ? traits[1]:"None"}</p>
-              <p> Body: {traits[2] != 7777 ? traits[2]:"None"}</p>
-              <p> Familiar: {traits[3] != 7777 ? traits[3]:"None"}</p>
-              <p> Head: {traits[4] != 7777 ? traits[4]:"None"}</p>
-              <p> Prop: {traits[5] != 7777 ? traits[5]:"None"}</p>
-              <p> Rune: {traits[6] != 7777 ? traits[6]:"None"}</p>
-
-              <p className="mt-2">  Check: {traitsStored.data?.slice(0,6).toString() == traits.slice(1,7).toString() ? "Ok":"!!!"}</p>
+              <div className="mt-2 text"> Background: <p className="text-gray-400 w-64">{traitNames[1] != undefined ? traitNames[1]:"None"} </p> </div>
+              <div className="mt-2 text"> Body: <p className="text-gray-400 w-64">{traitNames[2] != undefined ? traitNames[2]:"None"} </p> </div>
+              <div className="mt-2 text"> Familiar: <p className="text-gray-400 w-64">{traitNames[3] != undefined ? traitNames[3]:"None"} </p> </div>
+              <div className="mt-2 text"> Head: <p className="text-gray-400 w-64">{traitNames[4] != undefined ? traitNames[4]:"None"} </p> </div>
+              <div className="mt-2 text"> Prop: <p className="text-gray-400 w-64">{traitNames[5] != undefined ? traitNames[5]:"None"} </p> </div>
+              <div className="mt-2 text"> Rune: <p className="text-gray-400 w-64">{traitNames[6] != undefined ? traitNames[6]:"None"} </p> </div>
             </div>
             : ``}
           </div>
@@ -81,8 +95,8 @@ const TokenStorage = ({ l1Id, token, tokenId, storage, plugin, setWizard, t1, t2
           onClick={() => {tokenId? !isVerified.data ? verifyWizard(): null:null}}
         >
           {!isStoring ? tokenId? !isVerified.data
-          ? `Verify`
-          : `Already Verified`: "Select Token": "Storing.."}
+          ? `Store Traits`
+          : `Traits Already Stored`: "Select Token": "Storing.."}
            </button>
       </div>
 

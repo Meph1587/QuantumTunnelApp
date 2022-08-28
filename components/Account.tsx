@@ -7,10 +7,6 @@ import { injected } from "../connectors";
 
 
 
-const senderChianId = 4;
-const receiverChianId = 69;
-
-
 type Props = {
   triedToEagerConnect: boolean;
 };
@@ -43,6 +39,20 @@ const Account = ({ triedToEagerConnect}) => {
     return null;
   }
 
+
+  async function connect() {
+    try{
+      await connector.activate(injected, undefined, true)
+    }catch (error)  {
+      // ignore the error if it's a user rejected request
+      if (error instanceof UserRejectedRequestError) {
+        setConnecting(false);
+      } else {
+        console.log(error)
+      }
+    };
+  }
+
   if (typeof account !== "string") {
     const hasMetaMaskOrWeb3Available =
       MetaMaskOnboarding.isMetaMaskInstalled() ||
@@ -55,16 +65,9 @@ const Account = ({ triedToEagerConnect}) => {
           <button  className="border-solid border-white border-2  p-2 rounded-xs" 
             onClick={() => {
               setConnecting(true);
-
-               connector.activate(injected, undefined, true).then(()=>console.log("connected")).catch((error) => {
-                // ignore the error if it's a user rejected request
-                if (error instanceof UserRejectedRequestError) {
-                  setConnecting(false);
-                } else {
-                  console.log(error)
-                }
-              });
-            }}
+              connect()
+            }
+          }
           >
             {MetaMaskOnboarding.isMetaMaskInstalled()
               ? "Connect to MetaMask"

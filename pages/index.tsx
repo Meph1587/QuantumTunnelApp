@@ -23,7 +23,7 @@ import { SoulGemsList } from "../components/SoulGems";
 const wizardTraits = require("../data/traits.json");
 
 const l1Id = 4;
-const l2Id = 69;
+const l2Id = 421611;
 
 export enum Page {
   Tunnel,
@@ -42,15 +42,18 @@ function Home() {
   let [page, setPage] = useState(Page.Tunnel)
   let [wizard, setWizard] = useState(null)
 
-  const qt1 = useContract("0x5e0f60ee176c268bebb67e3dca191c11275aa36b", QT1) as QuantumTunnelL1;
-  const qt2 = useContract("0xb12bb899ca6de03ed0149e0cbf851633608c1e03", QT2) as QuantumTunnelL2;
-  const t1 = useContract("0xdc15dd7e092d9e195ab6c03cbeb3f7d1afa082f1", T1) as ERC721Enumerable;
-  const t2 = useContract("0xc1a8fd912c2fc45255ddf3aa3deb25af0023f549", T2) as AltWizards;
-  const plugin = useContract("0x7614bfa46cfc3b158c1804e76d2e7001e07d0412", SRG) as WizardStoragePlugin;
-  const storage = useContract("0xef7aaf4f05a5ebf46c9357325c6a004698a13b4a", LGS) as LostGrimoireStorage;
-  const tavern = useContract("0x3d5cacf72b9675905d042fe668a0568c2ab79a69", TVRN) as JollyTavern;
-  const bq = useContract("0xe6e27850a6dfad281073d0998c7527099a6575b4", BQ) as BaseQuest;
-  const gems = useContract("0xf1b1aa31b9d6e4b0d2ccefc75e610a972dfa4d1d", GEMS) as SoulGems;
+
+
+
+  const qt1 = useContract("0x88c0b1d9523fd7c8f225d57067cb709a2c648e67", QT1) as QuantumTunnelL1;
+  const qt2 = useContract("0x286faa336d2519a804034e99794ea584a85e08c4", QT2) as QuantumTunnelL2;
+  const t1 = useContract("0x5ffb41ccafb6d7c50b9b077f117e62d51227580c", T1) as ERC721Enumerable;
+  const t2 = useContract("0x50c9d2bfd88e243297c610b73f5b5ad55882e49a", T2) as AltWizards;
+  const plugin = useContract("0xf522a2ae2b8d863e4d39cf98d8f5f1e06e3d174b", SRG) as WizardStoragePlugin;
+  const storage = useContract("0x6c36529fbe328b5dd2afce4438fc6f34f2b51cbd", LGS) as LostGrimoireStorage;
+  const tavern = useContract("0x88c0b1d9523fd7c8f225d57067cb709a2c648e67", TVRN) as JollyTavern;
+  const bq = useContract("0x3Ce7A2cafF2905060Bf5590ff2Ac4D295A9F5221", BQ) as BaseQuest;
+  const gems = useContract("0x658fb2bc9f9a450e6f94cc9239cb2b04a326b263", GEMS) as SoulGems;
 
   return (
     <div className="background-black text-white">
@@ -72,7 +75,7 @@ function Home() {
                 : page === Page.History ?
                 <PendingTxs account={account} t1={t1.address} t2={t2.address} qt1={qt1.address} qt2={qt2.address}/>
                 : page === Page.SoulGems ?
-                 <SoulGemsList l1Id={l1Id} bq={bq} token={t2.address} tokenId={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2} gems={gems} ></SoulGemsList>
+                 <SoulGemsList l1Id={l1Id} token={t2.address} tokenId={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2} gems={gems} ></SoulGemsList>
                 :   <BaseQuestList l1Id={l1Id} bq={bq} token={t2.address} tokenId={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2} plugin={plugin} ></BaseQuestList>
             }</section>
             )}</div>

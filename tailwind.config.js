@@ -7,7 +7,11 @@ module.exports = {
     ],
     darkMode: false,
     theme: {
-      extend: {},
+      extend: {
+        backgroundImage: {
+          'map': "url('/frwcMap.png')",
+        }
+      },
     },
     variants: {
       extend: {},

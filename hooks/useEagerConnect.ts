@@ -7,13 +7,19 @@ export default function useEagerConnect() {
 
   const [tried, setTried] = useState(false);
 
+  async function activate() {
+      try{
+          await connector.activate(injected, undefined, true)
+      }catch{
+        setTried(true)
+      };
+    }
+  
+
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
       if (isAuthorized) {
-        connector.activate(injected, undefined, true).then(() => {})
-        .catch(
-          setTried(true)
-        );
+        activate()
       } else {
         setTried(true);
       }

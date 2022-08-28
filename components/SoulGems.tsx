@@ -5,7 +5,6 @@ import type { WizardStoragePlugin } from "../contracts/types";
 import useTokenHasStoredTraits from "../hooks/useTokenHasStoredTraits";
 import useGetTraits from "../hooks/useGetTraits";
 import useInput from "../hooks/useInput";
-import useENSName from "../hooks/useENSName";
 import {getProofForTraits, getProofForName} from "../utils/makeMerkleProof";
 import { useEffect, useState, useCallback } from "react";
 import useGetQuests from "../hooks/useGetQuest";
@@ -70,8 +69,8 @@ const SoulGemsGrid = ({ gemTokens, gem, setGem }) => {
       Gems
       {
         gemTokens.map((g) => (
-          <button onClick={()=> setGem(g.tokenId) }  style={{ "opacity":g.tokenId==gem? "100%": "60%"}}>
-            <div key={g.tokenId} className=" grid grid-flow-col grid-cols-6 mt-8">
+          <button key={g.tokenId} onClick={()=> setGem(g.tokenId) }  style={{ "opacity":g.tokenId==gem? "100%": "60%"}}>
+            <div  className=" grid grid-flow-col grid-cols-6 mt-8">
               <div className="text-left p-1 ml-5 w-28">
                 <p className="text-gray-500">Quest Id:</p>
                 {g.tokenId}

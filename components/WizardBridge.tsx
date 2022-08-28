@@ -1,5 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import {WizardList} from "../components/WizardGrid";
+import TokenSelectModal from "./TokenSelectModal";
 
 import { useState } from "react";
 
@@ -8,7 +9,7 @@ const wizardTraits = require("../data/traits.json");
 const senderChianId = 4;
 const receiverChianId = 69;
 const senderDomainId = 1001;
-const receiverDomainId = 10011;
+const receiverDomainId = 10010;
 
 
 const WizardBridge = ({l1Id,l2Id,  wizard, setWizard, show, setShow, t1, t2, qt1, qt2 }) => {
@@ -36,8 +37,7 @@ const WizardBridge = ({l1Id,l2Id,  wizard, setWizard, show, setShow, t1, t2, qt1
 
   return(
     
-    <div className="grid grid-flow-col grid-cols-2 mt-24 ">
-      <div className="p-4 mt-4 text-center"> 
+      <div className="p-4 mt-4 text-center mt-20"> 
         {chainId == l1Id ? 
           <div>
             <img src={wizard? "/tunnel.gif":"/tunnel.png"} className="w-96 h-96 ml-auto mr-auto"></img>
@@ -65,24 +65,19 @@ const WizardBridge = ({l1Id,l2Id,  wizard, setWizard, show, setShow, t1, t2, qt1
         <div className="p-8 mt-36 text-[12px] ">
           {wizard? <div>{name[1]}</div>: "-"}
         </div>
-        <button className="border-solid border-white border-2  p-4 pl-10 pr-10 rounded-xs w-96"
-            onClick={() => {wizard? tunnelWizard(chainId): setShow(!show)}}
-        >
-          {wizard? 'Tunnel Wizard' :`Select Wizard`}
-        </button>
+        {wizard  ? 
+        <div>
+            <button className="border-solid border-white border-2  p-4 pl-10 pr-10 rounded-xs w-96 mb-2"
+                onClick={() => {tunnelWizard(chainId)}}
+            > Tunnel Wizard 
+          </button>
+          <br></br>
+          <TokenSelectModal  l1Id={l1Id} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2} trigger={<button className="border-solid border-white border-2  p-4 pl-10 pr-10 rounded-xs w-96" >Switch Token</button>}></TokenSelectModal> 
+        </div>
+          : <TokenSelectModal l1Id={l1Id} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2} trigger={<button className="border-solid border-white border-2  p-4 pl-10 pr-10 rounded-xs w-96" >Select Token</button>}></TokenSelectModal> 
+        }
       </div>
       
-
-      <div className="border-l-2 p-4 border-solid border-gray-500 "> 
-        <p className="pb-2">
-          Your Tokens
-        </p>
-        <div className=" max-h-[550px] p-8 overflow-y-scroll scrollbar">
-          
-          <WizardList l1Id={l1Id} account={account} chainId = {chainId} wizard={wizard} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2}/> 
-        </div>
-      </div>
-    </div>
   );
 };
 
