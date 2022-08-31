@@ -44,7 +44,6 @@ function Home() {
 
 
 
-
   const qt1 = useContract("0x88c0b1d9523fd7c8f225d57067cb709a2c648e67", QT1) as QuantumTunnelL1;
   const qt2 = useContract("0x286faa336d2519a804034e99794ea584a85e08c4", QT2) as QuantumTunnelL2;
   const t1 = useContract("0x5ffb41ccafb6d7c50b9b077f117e62d51227580c", T1) as ERC721Enumerable;
@@ -52,7 +51,7 @@ function Home() {
   const plugin = useContract("0xf522a2ae2b8d863e4d39cf98d8f5f1e06e3d174b", SRG) as WizardStoragePlugin;
   const storage = useContract("0x6c36529fbe328b5dd2afce4438fc6f34f2b51cbd", LGS) as LostGrimoireStorage;
   const tavern = useContract("0x88c0b1d9523fd7c8f225d57067cb709a2c648e67", TVRN) as JollyTavern;
-  const bq = useContract("0x3Ce7A2cafF2905060Bf5590ff2Ac4D295A9F5221", BQ) as BaseQuest;
+  const bq = useContract("0x8ec194ace6a43a40e62fa96043aced08e25a0bc8", BQ) as BaseQuest;
   const gems = useContract("0x658fb2bc9f9a450e6f94cc9239cb2b04a326b263", GEMS) as SoulGems;
 
   return (

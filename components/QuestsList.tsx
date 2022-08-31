@@ -32,6 +32,7 @@ function formatDate(ts:BigNumber) {
         console.log(total)
         for (let questId=0; questId<total; questId++) {
           let q = await bq.getQuest(questId)
+          console.log(q)
           if (q.expiresAt.toNumber()*1000 < Date.now()){
             console.log(questId, "expired")
             quests.push(null)
@@ -81,9 +82,9 @@ const QuestGrid = ({l1Id, tokenId,  quests, quest, setQuest,setSlot, setWizard, 
           <button key={q.questId} className="text-left w-[100%]"
           onClick={()=> { setQuest(q.questId); setSlot(null)}} style={{ "opacity":q.questId==quest? "100%": "70%"}}>
             
-             <div className="text-left p-1 mt-8 w-36">
-                Quest Id: 
-                {" " + q.questId}
+             <div className="text-left p-1 mt-8 w-96">
+                Quest #
+                { q.questId + " - " + q.location}
               </div>
             <div  >
              {
@@ -150,19 +151,21 @@ export const BaseQuestList = ({l1Id, token, tokenId, bq, setWizard, wizardTraits
     await tx.wait()
   }
 
+  let coordinates =[]
+
 
 
   return(
     <div>
        <div className=" p-4"> 
           <div className="grid grid-flow-col grid-cols-3  ">
-            <div className=" col-span-2 p-10 text-center">
-                <div className="bg-map bg-contain bg-no-repeat h-[550px]">
-                  {/* <button className="relative block w-6 h-6 color-white p-[-10px] pointer right-[-12px] bottom-[-12px]  border-[12px] rounded-xl border-white text-8"
-                    onClick={}
+            <div className=" relative col-span-2 p-10 text-center">
+                <img className=" z-[1]" src="./frwcMap.png">
+                </img>
+                  <button className="absolute block w-4 h-4 color-white p-[-10px] pointer right-[34%] top-[43%]  border-[7px] rounded-xl border-white text-8"
+                    // onClick={}
                   >
-                  </button> */}
-                </div>
+                  </button>
                   { quests.length>0 ? quest!=null ? quests[quest].traitNames ?
                   <PartySlots traits={quests[quest].traitNames} tokenIds={quests[quest].tokenIds} slot={slot} setSlot={setSlot}  l1Id={l1Id} wizard={tokenId} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2}></PartySlots> 
                   : null : null : null}

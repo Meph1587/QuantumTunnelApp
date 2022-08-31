@@ -46,7 +46,7 @@ const NavBar = ({ l1Id, l2Id,setPage, setWizard}) => {
                 {account!=undefined ? 
                     <div className="text-right z-10 overflow-visible">
                         <div className="">
-                            <button className=""  onClick={() => {switchNetwork(chainId===l2Id ? l1Id : l2Id); setWizard(null); setPage(Page.Tunnel)}}>ᐊ {chainId == l1Id ? "Rinkeby" : chainId == l2Id? "OP-Kovan": "Switch To Rinkeby Or OP-Kovan"} ᐅ</button>
+                            <button className=""  onClick={() => {switchNetwork(chainId===l2Id ? l1Id : l2Id); setWizard(null); setPage(Page.Tunnel)}}>ᐊ {chainId == l1Id ? "Rinkeby" : chainId == l2Id? "Arbitrum-Rinkeby": "Switch To Rinkeby Or Arbitrum-Rinkeby"} ᐅ</button>
                         </div>
                         <div className="pt-3 ">
                         <button className="underline underline-offset-2" onClick={() => setShowDetails(!showDetails)}>
