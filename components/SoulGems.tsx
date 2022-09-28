@@ -1,20 +1,7 @@
 import type { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import {WizardList} from "./WizardGrid";
-import type { WizardStoragePlugin } from "../contracts/types";
-import useTokenHasStoredTraits from "../hooks/useTokenHasStoredTraits";
-import useGetTraits from "../hooks/useGetTraits";
-import useInput from "../hooks/useInput";
-import {getProofForTraits, getProofForName} from "../utils/makeMerkleProof";
 import { useEffect, useState, useCallback } from "react";
-import useGetQuests from "../hooks/useGetQuest";
-import { BigNumber, ethers } from "ethers";
-import useGetTraitNames from "../hooks/useGetTraitNames";
-import {
-  Multicall,
-  ContractCallResults,
-  ContractCallContext,
-} from 'ethereum-multicall';
 import { BaseProvider } from "@ethersproject/providers";
 
 
