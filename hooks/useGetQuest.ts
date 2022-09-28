@@ -1,7 +1,7 @@
 import useSWR from "swr";
-import type { BaseQuest } from "../contracts/types";
+import { BaseQuest } from "../contracts/types";
 import useKeepSWRDataLiveAsBlocksArrive from "./useKeepSWRDataLiveAsBlocksArrive";
-import useTokenContract from "./useTokenContract";
+
 
 function getQuests(contract: BaseQuest) {
   return async (_: string) => {

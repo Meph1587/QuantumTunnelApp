@@ -1,16 +1,9 @@
 import type { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-import {WizardList} from "./WizardGrid";
-import useTokenHasStoredTraits from "../hooks/useTokenHasStoredTraits";
-import useGetTraits from "../hooks/useGetTraits";
-import useInput from "../hooks/useInput";
-import {getProofForTraits, getProofForName} from "../utils/makeMerkleProof";
 import { useEffect, useState, useCallback } from "react";
-import useGetQuests from "../hooks/useGetQuest";
 import { BigNumber, ethers } from "ethers";
 import { BaseProvider } from "@ethersproject/providers";
 import {getTraitNames} from "../utils/getTraitNames";
-import TokenSelectModal from "./TokenSelectModal";
 import PartySlots from "./PartySlots";
 
 
