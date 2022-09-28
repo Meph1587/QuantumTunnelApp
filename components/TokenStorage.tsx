@@ -81,12 +81,13 @@ const TokenStorage = ({ l1Id, token, tokenId, storage, plugin, setWizard, t1, t2
           </div>
           <div className="text-left ml-16 border-left h-[360px]">{tokenId? 
             <div>
-              <div className="mt-2 text"> Background: <p className="text-gray-400 w-64">{traitNames[1] != undefined ? traitNames[1]:"None"} </p> </div>
-              <div className="mt-2 text"> Body: <p className="text-gray-400 w-64">{traitNames[2] != undefined ? traitNames[2]:"None"} </p> </div>
-              <div className="mt-2 text"> Familiar: <p className="text-gray-400 w-64">{traitNames[3] != undefined ? traitNames[3]:"None"} </p> </div>
-              <div className="mt-2 text"> Head: <p className="text-gray-400 w-64">{traitNames[4] != undefined ? traitNames[4]:"None"} </p> </div>
-              <div className="mt-2 text"> Prop: <p className="text-gray-400 w-64">{traitNames[5] != undefined ? traitNames[5]:"None"} </p> </div>
+              <div className="mt-2 text"> Head: <p className="text-gray-400 w-64">{traitNames[3] != undefined ? traitNames[3]:"None"} </p> </div>
+              <div className="mt-2 text"> Body: <p className="text-gray-400 w-64">{traitNames[4] != undefined ? traitNames[4]:"None"} </p> </div>
+              <div className="mt-2 text"> Prop: <p className="text-gray-400 w-64">{traitNames[2] != undefined ? traitNames[2]:"None"} </p> </div>
+              <div className="mt-2 text"> Familiar: <p className="text-gray-400 w-64">{traitNames[5] != undefined ? traitNames[5]:"None"} </p> </div>
               <div className="mt-2 text"> Rune: <p className="text-gray-400 w-64">{traitNames[6] != undefined ? traitNames[6]:"None"} </p> </div>
+              <div className="mt-2 text"> Affinity: <p className="text-gray-400 w-64">{traitNames[1] != undefined ? traitNames[1].replace("aff:", ""):"None"} </p> </div>
+              
             </div>
             : ``}
           </div>

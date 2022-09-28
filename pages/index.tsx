@@ -42,17 +42,31 @@ function Home() {
   let [page, setPage] = useState(Page.Tunnel)
   let [wizard, setWizard] = useState(null)
 
+  // let qt1Address = "0x5a3b381b0d23da7180ef6fb6a635368358281042"
+  // let l1GemsAddress = "0x37a0f11940bd4884fa8dc0f0afa509b075ac96c6"
+  // let l1WizAddress = "0x8144f311c0a94ab4faadbcda36de3deed4b2c861"
+  // let qt2Address = "0x190e9eafb6caf31b0f8f99a44fcd23dbb25f2b34"
+  // let rmAddress = "0x65ab01615b6acaaf47f014934c0927f0c010e786"
+  // let randomAddress = "0xeeda71a03af20ce719f28a2d1527c148405fd8eb"
+  // let l2GemsAddress = "0x3227b37c01039b1a074d9cac39ace902302aac7e"
+  // let l2WizAddress = "0xe5a55eb09bb6248491f5af706b3a86f92e9a8504"
+  // let storageAddress = "0x6c16e9b8edf110e5386b8b80916e018645bbc9a1"
+  // let pluginAddress = "0x387a396484fc6f95851e87cd460726cb39326d34"
+  // let grimoireAddress = "0x8ecfdcef47bee9eeb0d18101b222f410238b26ff"
+  // let tavernAddress = "0x6a6442ae018fb422716a2752b6f0efbca8a7301b"
+  // let questsAddress = "0x0cB948B6a558E99f22c66a07Da2A143f08bF3414"
+  // let memoriesAddress = "0x68bb03647830c7c68e65b70cadb71fedf2c1234b"
+  // let multicallAddress = "0xc8ac645fb4efccfaf8761ae2a1f9770b441cc3a6"
 
-
-  const qt1 = useContract("0x88c0b1d9523fd7c8f225d57067cb709a2c648e67", QT1) as QuantumTunnelL1;
-  const qt2 = useContract("0x286faa336d2519a804034e99794ea584a85e08c4", QT2) as QuantumTunnelL2;
-  const t1 = useContract("0x5ffb41ccafb6d7c50b9b077f117e62d51227580c", T1) as ERC721Enumerable;
-  const t2 = useContract("0x50c9d2bfd88e243297c610b73f5b5ad55882e49a", T2) as AltWizards;
-  const plugin = useContract("0xf522a2ae2b8d863e4d39cf98d8f5f1e06e3d174b", SRG) as WizardStoragePlugin;
-  const storage = useContract("0x6c36529fbe328b5dd2afce4438fc6f34f2b51cbd", LGS) as LostGrimoireStorage;
-  const tavern = useContract("0x88c0b1d9523fd7c8f225d57067cb709a2c648e67", TVRN) as JollyTavern;
-  const bq = useContract("0x8ec194ace6a43a40e62fa96043aced08e25a0bc8", BQ) as BaseQuest;
-  const gems = useContract("0x658fb2bc9f9a450e6f94cc9239cb2b04a326b263", GEMS) as SoulGems;
+  const qt1 = useContract("0x5a3b381b0d23da7180ef6fb6a635368358281042", QT1) as QuantumTunnelL1;
+  const qt2 = useContract("0x190e9eafb6caf31b0f8f99a44fcd23dbb25f2b34", QT2) as QuantumTunnelL2;
+  const t1 = useContract("0x8144f311c0a94ab4faadbcda36de3deed4b2c861", T1) as ERC721Enumerable;
+  const t2 = useContract("0xe5a55eb09bb6248491f5af706b3a86f92e9a8504", T2) as AltWizards;
+  const storage = useContract("0x6c16e9b8edf110e5386b8b80916e018645bbc9a1", LGS) as LostGrimoireStorage;
+  const plugin = useContract("0x387a396484fc6f95851e87cd460726cb39326d34", SRG) as WizardStoragePlugin;
+  const tavern = useContract("0x6a6442ae018fb422716a2752b6f0efbca8a7301b", TVRN) as JollyTavern;
+  const bq = useContract("0x0cB948B6a558E99f22c66a07Da2A143f08bF3414", BQ) as BaseQuest;
+  const gems = useContract("0x3227b37c01039b1a074d9cac39ace902302aac7e", GEMS) as SoulGems;
 
   return (
     <div className="background-black text-white">

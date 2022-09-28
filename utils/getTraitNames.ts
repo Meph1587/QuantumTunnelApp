@@ -1,11 +1,11 @@
-
 import {
     Multicall,
     ContractCallResults,
     ContractCallContext,
   } from 'ethereum-multicall';
-  import { BaseProvider } from "@ethersproject/providers";
-  import type { WizardStoragePlugin } from "../contracts/types";
+
+import { BaseProvider } from "@ethersproject/providers";
+import type { WizardStoragePlugin } from "../contracts/types";
 
 export async function getTraitNames(plugin: WizardStoragePlugin, p: BaseProvider, traitIds: number[]) {
     
@@ -25,11 +25,7 @@ export async function getTraitNames(plugin: WizardStoragePlugin, p: BaseProvider
     const results: ContractCallResults = await multicall.call(contractCallContext);
    
     let names = results.results["WizardStoragePlugin"].callsReturnContext.map(r => {
-      if(r.methodParameters[0] > 341){
-        return r.returnValues[0] == undefined ? " - ": "Aff:"+r.returnValues[0]
-      }else{
         return r.returnValues[0]
-      }
     })
   
     return names

@@ -58,7 +58,7 @@ const NavBar = ({ l1Id, l2Id,setPage, setWizard}) => {
                         <div className="">
                             <div className="pt-3" ><button onClick={ () => {setPage(Page.History)}}>Tx History</button></div>
                             <div className="pt-3" ><a href={"https://rinkeby.etherscan.io/address/" + account} target="_blank" rel="noreferrer">L1 Etherscan</a></div>
-                            <div className="pt-3" ><a href={"https://kovan-optimistic.etherscan.io//address/" + account} target="_blank" rel="noreferrer">L2 Etherscan</a></div>
+                            <div className="pt-3" ><a href={"https://testnet.arbiscan.io/address/" + account} target="_blank" rel="noreferrer">L2 Etherscan</a></div>
                         </div>
                         :null
                         }

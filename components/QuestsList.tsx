@@ -28,12 +28,13 @@ function formatDate(ts:BigNumber) {
   const run = useCallback(async () => {
     let quests: any = [];
     try {
-        const total = (await bq.getNrQuests()).toNumber();
+        const total = (await bq.getNrQuests()).toString();
         console.log(total)
         for (let questId=0; questId<total; questId++) {
+          console.log(await bq.getQuest(questId))
           let q = await bq.getQuest(questId)
-          console.log(q)
-          if (q.expiresAt.toNumber()*1000 < Date.now()){
+          console.log('h')
+          if (q.expiresAt.add(1000).gt(Date.now())){
             console.log(questId, "expired")
             quests.push(null)
             continue;
@@ -48,7 +49,7 @@ function formatDate(ts:BigNumber) {
               questId,
               traitNames
             }
-            console.log(qn)
+            console.log('' +qn)
             quests.push(qn)
           }
           
@@ -117,7 +118,7 @@ const QuestGrid = ({l1Id, tokenId,  quests, quest, setQuest,setSlot, setWizard, 
       }
       
       <div className="p-8 text-[16px] ">
-        {"Send: " + tokenId?.toNumber() +" on quest: " + quest}
+        {"Send: " + tokenId?.toString() +" on quest: " + quest}
       </div>
     </div>
   )
@@ -160,12 +161,7 @@ export const BaseQuestList = ({l1Id, token, tokenId, bq, setWizard, wizardTraits
        <div className=" p-4"> 
           <div className="grid grid-flow-col grid-cols-3  ">
             <div className=" relative col-span-2 p-10 text-center">
-                <img className=" z-[1]" src="./frwcMap.png">
-                </img>
-                  <button className="absolute block w-4 h-4 color-white p-[-10px] pointer right-[34%] top-[43%]  border-[7px] rounded-xl border-white text-8"
-                    // onClick={}
-                  >
-                  </button>
+                
                   { quests.length>0 ? quest!=null ? quests[quest].traitNames ?
                   <PartySlots traits={quests[quest].traitNames} tokenIds={quests[quest].tokenIds} slot={slot} setSlot={setSlot}  l1Id={l1Id} wizard={tokenId} setWizard={setWizard} wizardTraits={wizardTraits} t1={t1} t2={t2}></PartySlots> 
                   : null : null : null}
