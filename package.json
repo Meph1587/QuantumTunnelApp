@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "compile-contract-types": "typechain --target ethers-v5 --out-dir './contracts/types' './node_modules/contracts/abi/*.json'",
+    "compile-contract-types": "typechain --target ethers-v5 --out-dir './contracts/types' './abis/*.json'",
     "postinstall": "yarn compile-contract-types"
   },
   "dependencies": {
@@ -21,7 +21,6 @@
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/metamask": "^8.0.28-beta.0",
     "@web3-react/walletconnect": "^8.0.35-beta.0",
-    "contracts": "https://github.com/Meph1587/ForgottenQuests.git",
     "ethereum-multicall": "^2.14.1",
     "graphql": "^16.5.0",
     "keccak256": "^1.0.3",
